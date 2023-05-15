@@ -1,4 +1,4 @@
-namespace UnitTests
+namespace CerteecStore.Application.UnitTests
 {
     public class Tests
     {
