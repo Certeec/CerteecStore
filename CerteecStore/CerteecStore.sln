@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CerteecStore.Application", "CerteecStore.Application\CerteecStore.Application.csproj", "{64DF1504-D8F0-41A7-9779-C9D2EA4EFA75}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CerteecStore.Console", "CerteecStore.Console\CerteecStore.Console.csproj", "{C2412A24-6225-4101-B935-464C8ED6DCA5}"
-	ProjectSection(ProjectDependencies) = postProject
-		{64DF1504-D8F0-41A7-9779-C9D2EA4EFA75} = {64DF1504-D8F0-41A7-9779-C9D2EA4EFA75}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CerteecStore.Application.UnitTests", "CerteecStore.Application.UnitTests\CerteecStore.Application.UnitTests.csproj", "{C2F2B5F1-6D47-4B1F-87BE-B7B7376C94D0}"
 	ProjectSection(ProjectDependencies) = postProject

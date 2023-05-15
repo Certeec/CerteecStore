@@ -22,13 +22,8 @@ namespace CerteecStore.Application
         //    ...
         //}
         //Na pewno bardzo Ci to ułatwi przy testach, bo w zależności od potrzeb nie będziesz musiał wypełniać całego obiektu.
-        public Product(int productId, string name, string description, double itemPrice, int quantity)
-        {
-            ProductId = productId;
-            Name = name;
-            Description = description;
-            ItemPrice = itemPrice;
-            Quantity = quantity;
-        }
+
+        /// zmienione
+      
     }
 }
