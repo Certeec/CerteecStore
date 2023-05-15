@@ -1,3 +1,4 @@
+// Do usuniêcia
 namespace CerteecStore.Application.UnitTests
 {
     public class Tests

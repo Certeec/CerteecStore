@@ -14,6 +14,14 @@ namespace CerteecStore.Application
         public double ItemPrice { get; set; }
         public int Quantity { get; set; }
 
+        // nie musisz deklarować konstruktora. Zauważ, że wszystkie Twoje właściwości są publiczne i równie dobrze możesz pisać:
+        //Product product = new Product
+        //{
+        //    ProductId = ...
+        //    Name = ...
+        //    ...
+        //}
+        //Na pewno bardzo Ci to ułatwi przy testach, bo w zależności od potrzeb nie będziesz musiał wypełniać całego obiektu.
         public Product(int productId, string name, string description, double itemPrice, int quantity)
         {
             ProductId = productId;
