@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CerteecStore.Application", "CerteecStore.Application\CerteecStore.Application.csproj", "{64DF1504-D8F0-41A7-9779-C9D2EA4EFA75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CerteecStore.Application", "CerteecStore.Application\CerteecStore.Application.csproj", "{64DF1504-D8F0-41A7-9779-C9D2EA4EFA75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CerteecStore.Console", "CerteecStore.Console\CerteecStore.Console.csproj", "{C2412A24-6225-4101-B935-464C8ED6DCA5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CerteecStore.Application.UnitTests", "CerteecStore.Application.UnitTests\CerteecStore.Application.UnitTests.csproj", "{C2F2B5F1-6D47-4B1F-87BE-B7B7376C94D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CerteecStore.Application.UnitTests", "CerteecStore.Application.UnitTests\CerteecStore.Application.UnitTests.csproj", "{C2F2B5F1-6D47-4B1F-87BE-B7B7376C94D0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{64DF1504-D8F0-41A7-9779-C9D2EA4EFA75} = {64DF1504-D8F0-41A7-9779-C9D2EA4EFA75}
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CerteecStore.ConsoleApp", "CerteecStore.ConsoleApp\CerteecStore.ConsoleApp.csproj", "{5D7D7213-6E12-4D40-BA13-26A115A66AC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,14 +22,14 @@ Global
 		{64DF1504-D8F0-41A7-9779-C9D2EA4EFA75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64DF1504-D8F0-41A7-9779-C9D2EA4EFA75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64DF1504-D8F0-41A7-9779-C9D2EA4EFA75}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C2412A24-6225-4101-B935-464C8ED6DCA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C2412A24-6225-4101-B935-464C8ED6DCA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C2412A24-6225-4101-B935-464C8ED6DCA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C2412A24-6225-4101-B935-464C8ED6DCA5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C2F2B5F1-6D47-4B1F-87BE-B7B7376C94D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C2F2B5F1-6D47-4B1F-87BE-B7B7376C94D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2F2B5F1-6D47-4B1F-87BE-B7B7376C94D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2F2B5F1-6D47-4B1F-87BE-B7B7376C94D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D7D7213-6E12-4D40-BA13-26A115A66AC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D7D7213-6E12-4D40-BA13-26A115A66AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D7D7213-6E12-4D40-BA13-26A115A66AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D7D7213-6E12-4D40-BA13-26A115A66AC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

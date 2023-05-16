@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CerteecStore.Application;
 
-namespace CerteecStor
+namespace CerteecStore.ConsoleApp
 {
     /// <summary>
     ///  i Tutaj mam problem... Jak zmieniam namespace na CerteecStore.Console to wtedy mi nie lapie usingow... cos robie nie tak.. tylko nie wiem co :P wiec musimy o to zachaczyc 
