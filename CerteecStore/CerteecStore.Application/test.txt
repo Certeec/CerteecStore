@@ -1,2 +1,3 @@
 ﻿1,Bike,This is a Bike,500,1
 2,Water,Water to drink,2,10
+3,CocaCola,Soda,6,5

@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using CerteecStore.Application.Carts;
 
 namespace CerteecStore.Application
 {
     public static class InMemoryDatabase
     {
-        public static List<Product> ListOfProducts = new List<Product>();
+        public static List<Product> Prodcuts = new List<Product>();
+        public static Dictionary<Guid,Cart> Carts = new Dictionary<Guid,Cart>();
         public static void ReadProductsFromFile(string url)
         {
             try
@@ -19,7 +21,7 @@ namespace CerteecStore.Application
                     string srLine;
                     while ((srLine = sr.ReadLine())!= null)
                     {
-                        ListOfProducts.Add(ReadProductFromFile(srLine));
+                        Prodcuts.Add(ReadProductFromFile(srLine));
                     }
 
                 }
