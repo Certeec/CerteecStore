@@ -26,5 +26,9 @@ namespace CerteecStore.Application.Carts
         {
             return InMemoryDatabase.Prodcuts.Single(n => n.ProductId == productId);
         }
+        public void UpdateCartToDatabase(Guid userId, Cart current)
+        {
+            InMemoryDatabase.Carts[userId] = current;
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace CerteecStore.Application.Carts
     {
         public Cart FindCartByUserId(Guid userId);
         public Product FindProductById(int productId);
+        public void UpdateCartToDatabase(Guid userId, Cart current);
     }
 }

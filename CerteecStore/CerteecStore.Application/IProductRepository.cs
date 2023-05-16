@@ -13,5 +13,7 @@ namespace CerteecStore.Application
 
         public bool RemoveByProductId(int id);
 
+        public Product FindProductById(int productId);
+
     }
 }

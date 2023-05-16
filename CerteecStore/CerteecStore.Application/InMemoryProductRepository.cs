@@ -18,7 +18,11 @@ namespace CerteecStore.Application
                 InMemoryDatabase.Prodcuts.RemoveAll(n => n.ProductId == id);
                 return true;
             ///Is not Crashing while item doesnt exist
+        }
 
+        public Product FindProductById(int productId)
+        {
+            return InMemoryDatabase.Prodcuts.Single(n => n.ProductId == productId);
         }
     }
 }

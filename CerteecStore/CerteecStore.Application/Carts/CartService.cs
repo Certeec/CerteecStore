@@ -9,40 +9,30 @@ namespace CerteecStore.Application.Carts
 {
     public class CartService
     {
-        private ICartRepository _cartRepository; // odstęp pomiędzy konstruktorem i właściwością
-        public CartService(ICartRepository cartRepository)
+        private ICartRepository _cartRepository;
+        private IProductRepository _productRepository;
+
+        public CartService(ICartRepository cartRepository, IProductRepository productRepository)
         {
             _cartRepository = cartRepository;
+            _productRepository = productRepository;
         }
 
         public void AddProductToCart(Guid userId, int productId, int quantityToAdd)
         {
-            Cart current =_cartRepository.FindCartByUserId(userId); // spacja po =
-            Product productToAdd = _cartRepository.FindProductById(productId); // według mnie metoda FindProductById niezbyt pasuje do ICartRepository?
+            Cart current = _cartRepository.FindCartByUserId(userId); 
+            Product productToAdd = _productRepository.FindProductById(productId);
 
-            // ten if mógłbyś napisać jako:
-            //if(current.Products.ContainsKey(productToAdd))
-            //{
-            //    current.Products[productToAdd] += quantityToAdd;
-            //}
-            //Wydaje mi się, że wygląda trochę czyściej
-            if (current.Products.TryGetValue(productToAdd, out int currentAmount))
+            if (current.Products.ContainsKey(productToAdd))
             {
-                current.Products[productToAdd] = currentAmount + quantityToAdd;
+                current.Products[productToAdd] += quantityToAdd;
             }
             else
             {
                 current.Products.Add(productToAdd, quantityToAdd);
-            } // pusta linia
-            UpdateCartToDatabase(userId, current);
+            }
+          
+            _cartRepository.UpdateCartToDatabase(userId, current);
         }
-
-        // Super sobie poradziłeś, z wymyśleniem ICartRepository, ale zobacz co tu się stało,
-        // nasz CartService zaczął zależeć od InMemoryDatabase, a co jeśli będziemy chcieli zmienić bazę?
-        public void UpdateCartToDatabase(Guid userId,Cart current)
-        {
-            InMemoryDatabase.Carts[userId] = current;
-        }
-
     }
 }

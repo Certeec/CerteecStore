@@ -24,7 +24,7 @@ namespace CerteecStore.ConsoleApp
             Console.WriteLine(InMemoryDatabase.Prodcuts[1].Name);
            bool result = _productRepository.RemoveByProductId(3);
            Console.WriteLine(JsonConvert.SerializeObject(_productRepository.ReadAll()));
-            CartService cart = new CartService(_cartRepository);
+            CartService cart = new CartService(_cartRepository, _productRepository);
             Guid user1 = Guid.NewGuid();
             Guid user2 = Guid.NewGuid();
             cart.AddProductToCart(user1, 1, 1);
