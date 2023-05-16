@@ -11,7 +11,9 @@ namespace CerteecStore.Application
     public static class InMemoryDatabase
     {
         public static List<Product> Prodcuts = new List<Product>();
-        public static Dictionary<Guid,Cart> Carts = new Dictionary<Guid,Cart>(); // odstęp pomiędzy metodą i właściwością
+
+        public static Dictionary<Guid,Cart> Carts = new Dictionary<Guid,Cart>();
+
         public static void ReadProductsFromFile(string url)
         {
             try
@@ -19,7 +21,7 @@ namespace CerteecStore.Application
                 using (StreamReader sr = new StreamReader(url))
                 {
                     string srLine;
-                    while ((srLine = sr.ReadLine())!= null) // spacja pomiędzy !=
+                    while ((srLine = sr.ReadLine()) != null)
                     {
                         Prodcuts.Add(ReadProductFromFile(srLine));
                     }
@@ -30,7 +32,8 @@ namespace CerteecStore.Application
             {
                 Console.WriteLine($"the errors is : {e}");
             }
-        } // odstęp pomiędzy metodami
+        } 
+
         public static Product ReadProductFromFile(string line)
         {
             string[] parts = line.Split(',');
