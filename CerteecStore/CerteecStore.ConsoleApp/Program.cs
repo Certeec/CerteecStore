@@ -15,15 +15,15 @@ namespace CerteecStore.ConsoleApp
     public class Program
     {
         static IProductRepository _productRepository;
-        static ICartRepository _cartRepository;
+        static ICartRepository _cartRepository; // odstęp pomiędzy funkcją i właściwością
         public static void Main()
         {
             Initialize();
             Menu();
             Console.WriteLine(InMemoryDatabase.Prodcuts[0].Description);
             Console.WriteLine(InMemoryDatabase.Prodcuts[1].Name);
-           bool result = _productRepository.RemoveByProductId(3);
-           Console.WriteLine(JsonConvert.SerializeObject(_productRepository.ReadAll()));
+           bool result = _productRepository.RemoveByProductId(3); // wcięcie
+           Console.WriteLine(JsonConvert.SerializeObject(_productRepository.ReadAll())); // wcięcie
             CartService cart = new CartService(_cartRepository, _productRepository);
             Guid user1 = Guid.NewGuid();
             Guid user2 = Guid.NewGuid();
@@ -36,7 +36,7 @@ namespace CerteecStore.ConsoleApp
         private static void Initialize()
         {
             
-            if(Config.DbType == "InMemory")
+            if(Config.DbType == "InMemory") // zastanawiam się czy DbType nie lepiej zrobić jako enum, zauważ, że dostępne wartości sa skończone
             {
                 _productRepository = new InMemoryProductRepository();
                 _cartRepository = new InMemoryCartRepository();
@@ -62,7 +62,7 @@ namespace CerteecStore.ConsoleApp
 
             }
         }
-        private static void secondMenu()
+        private static void secondMenu() // nieużywana metoda
         {
 
         }

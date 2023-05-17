@@ -17,6 +17,8 @@ namespace CerteecStore.Application.Carts
             }
             catch(Exception e)
             {
+                // nie wiem czy to jest najrozsądniejsze rozwiązanie. Jako osoba wywołująca spodziewałbym się po nazwie metody, że jak nie znajdę koszyka to go nie dostanę
+                // może jakbyś nazwał FindOrCreateCartByUserId?
                 return new Cart();
 
             }
