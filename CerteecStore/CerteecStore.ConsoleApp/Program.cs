@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using CerteecStore.Application;
 using CerteecStore.Application.Carts;
 using Newtonsoft.Json;
+using CerteecStore.Application.Database;
+using CerteecStore.Application.Products;
 
 namespace CerteecStore.ConsoleApp
 {

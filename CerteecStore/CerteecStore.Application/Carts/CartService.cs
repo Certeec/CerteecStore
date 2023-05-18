@@ -4,13 +4,14 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CerteecStore.Application.Products;
 
 namespace CerteecStore.Application.Carts
 {
     public class CartService
     {
-        private ICartRepository _cartRepository; // w przypadku takich "bezstanowych" serwisów, dobrą praktyką jest deklarować inne serwisy jako "readonly"
-        private IProductRepository _productRepository;
+        private readonly ICartRepository _cartRepository; 
+        private readonly IProductRepository _productRepository;
 
         public CartService(ICartRepository cartRepository, IProductRepository productRepository)
         {
@@ -20,11 +21,7 @@ namespace CerteecStore.Application.Carts
 
         public void AddProductToCart(Guid userId, int productId, int quantityToAdd)
         {
-            // np. nie chciałbyś żeby ktoś Ci zrobił np.:
-            // _cartRepository = null;
-            // a przez to, że to nie jest "readonly" to może
-
-            Cart current = _cartRepository.FindCartByUserId(userId); 
+            Cart current = _cartRepository.FindOrCreateCartByUserId(userId); 
             Product productToAdd = _productRepository.FindProductById(productId);
 
             // zastanawiam się czy by nie zadziałało gdybyś po prostu napisał:
@@ -39,7 +36,8 @@ namespace CerteecStore.Application.Carts
                 current.Products.Add(productToAdd, quantityToAdd);
             }
           
-            _cartRepository.UpdateCartToDatabase(userId, current);
+            _cartRepository.UpdateCart(userId, current);
         }
     }
 }
+

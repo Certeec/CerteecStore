@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CerteecStore.Application.Products;
+using CerteecStore.Application.Database;
 
 namespace CerteecStore.Application.Carts
 {
     public class InMemoryCartRepository :  ICartRepository
     {
 
-        public Cart FindCartByUserId(Guid id)
+        public Cart FindOrCreateCartByUserId(Guid id)
         {
             try
             {
@@ -28,7 +30,7 @@ namespace CerteecStore.Application.Carts
         {
             return InMemoryDatabase.Prodcuts.Single(n => n.ProductId == productId);
         }
-        public void UpdateCartToDatabase(Guid userId, Cart current)
+        public void UpdateCart(Guid userId, Cart current)
         {
             InMemoryDatabase.Carts[userId] = current;
         }

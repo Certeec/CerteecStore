@@ -1,11 +1,10 @@
-﻿using CerteecStore.Application.Carts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CerteecStore.Application
+namespace CerteecStore.Application.Products
 {
     public interface IProductRepository
     {
@@ -14,6 +13,8 @@ namespace CerteecStore.Application
         public bool RemoveByProductId(int id);
 
         public Product FindProductById(int productId);
+
+        public bool AddProduct(Product productToAdd);
 
     }
 }

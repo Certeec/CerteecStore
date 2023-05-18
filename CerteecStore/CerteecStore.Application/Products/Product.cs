@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CerteecStore.Application
+namespace CerteecStore.Application.Products
 {
     public class Product
     {
