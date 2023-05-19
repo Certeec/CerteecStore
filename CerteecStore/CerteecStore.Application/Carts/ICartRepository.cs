@@ -10,7 +10,6 @@ namespace CerteecStore.Application.Carts
     public interface ICartRepository
     {
         Cart FindOrCreateCartByUserId(Guid userId);
-        Product FindProductById(int productId); // ta metoda jest chyba do usunięcia? To samo masz w IProductRepository
         void UpdateCart(Guid userId, Cart current);
     }
 }

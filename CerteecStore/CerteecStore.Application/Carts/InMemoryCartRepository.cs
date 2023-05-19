@@ -19,20 +19,20 @@ namespace CerteecStore.Application.Carts
             }
             catch(Exception e)
             {
-                // nie wiem czy to jest najrozsądniejsze rozwiązanie. Jako osoba wywołująca spodziewałbym się po nazwie metody, że jak nie znajdę koszyka to go nie dostanę
-                // może jakbyś nazwał FindOrCreateCartByUserId?
                 return new Cart();
-
             }
         }
 
-        public Product FindProductById(int productId)
-        {
-            return InMemoryDatabase.Prodcuts.Single(n => n.ProductId == productId);
-        }
         public void UpdateCart(Guid userId, Cart current)
         {
             InMemoryDatabase.Carts[userId] = current;
+        }
+
+        public double CountCartValue(Guid userId)
+        {
+            Cart userCart = FindOrCreateCartByUserId(userId);
+            
+            return value;
         }
     }
 }
