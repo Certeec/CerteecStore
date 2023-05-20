@@ -29,7 +29,7 @@ namespace CerteecStore.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult triesPost([FromBody]Product product)
+        public IActionResult triesPost([FromBody]Product product) //Bardziej bym to nazwał AddProduct, nie musisz pisać "Post", bo już jest na górze, więc wiadomo, że to post ; )
         {
             _productRepository.AddProduct(product);
             Console.WriteLine("New Item Added");

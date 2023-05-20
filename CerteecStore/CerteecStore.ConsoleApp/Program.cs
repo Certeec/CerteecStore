@@ -37,7 +37,7 @@ namespace CerteecStore.ConsoleApp
 
         private static void Initialize()
         {
-            
+            // pusta linia
             if(Config.DbType == "InMemory") // zastanawiam się czy DbType nie lepiej zrobić jako enum, zauważ, że dostępne wartości sa skończone
             {
                 _productRepository = new InMemoryProductRepository();
