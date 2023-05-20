@@ -30,9 +30,23 @@ namespace CerteecStore.Application.Carts
 
         public double CountCartValue(Guid userId)
         {
+            double value = 0;
             Cart userCart = FindOrCreateCartByUserId(userId);
+            for(int i = 0; i < userCart.Products.Count(); i++)
+            {
+                Product current = userCart.Products.ElementAt(1).Key;
+                int multiplyBy = userCart.Products.ElementAt(1).Value;
+                value += current.ItemPrice * multiplyBy; 
+            }
             
             return value;
+        }
+
+        public void AddProductToCart(Guid userId, Product productToAdd, int quantity)
+        {
+            Cart userCart = FindOrCreateCartByUserId(userId);
+            userCart.Products.Add(productToAdd, quantity);
+            
         }
     }
 }

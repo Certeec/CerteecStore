@@ -9,10 +9,12 @@ namespace CerteecStore.API.Controllers
     public class CartsController : Controller
     {
         private ICartRepository _cartRepository;
+        private IProductRepository _productRepository;
 
         public CartsController()
         {
             _cartRepository = new InMemoryCartRepository();
+            _productRepository = new InMemoryProductRepository();
         }
 
 
@@ -23,6 +25,22 @@ namespace CerteecStore.API.Controllers
             Cart userCart = _cartRepository.FindOrCreateCartByUserId(userId);
             return Ok(userCart);
         }
+
+        [HttpGet("CountCartValue{userId}")]
+        public IActionResult CountCartValue(Guid userId)
+        {
+            double value = _cartRepository.CountCartValue(userId);
+            return Ok(value);
+        }
+
+        [HttpPost("AddProductToCart{userId}/{productId}/{quantity}")]
+        public IActionResult AddProductToCart(Guid userId, int productId, int quantity)
+        {
+            Product productToAdd = _productRepository.FindProductById(productId);
+            _cartRepository.AddProductToCart(userId, productToAdd, quantity);
+            return Ok();
+        }
+
     }
 
 }

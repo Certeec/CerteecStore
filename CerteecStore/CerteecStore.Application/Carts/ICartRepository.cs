@@ -11,5 +11,7 @@ namespace CerteecStore.Application.Carts
     {
         Cart FindOrCreateCartByUserId(Guid userId);
         void UpdateCart(Guid userId, Cart current);
+        double CountCartValue(Guid userId);
+        void AddProductToCart(Guid userId, Product productToAdd, int quantity);
     }
 }
