@@ -8,7 +8,7 @@ using CerteecStore.Application.Products;
 
 namespace CerteecStore.Application.Carts
 {
-    public class CartService
+    public class CartService 
     {
         private readonly ICartRepository _cartRepository; 
         private readonly IProductRepository _productRepository;
@@ -19,25 +19,52 @@ namespace CerteecStore.Application.Carts
             _productRepository = productRepository;
         }
 
-        public void AddProductToCart(Guid userId, int productId, int quantityToAdd)
+        public Cart FindOrCreateCartByUserId(Guid userId)
         {
-            Cart current = _cartRepository.FindOrCreateCartByUserId(userId); 
-            Product productToAdd = _productRepository.FindProductById(productId);
+            return _cartRepository.FindOrCreateCartByUserId(userId);
+        }
 
-            // zastanawiam się czy by nie zadziałało gdybyś po prostu napisał:
-            // current.Products[productToAdd] += quantityToAdd;
-            // bez żadnych if-ów, ale to potrzebujesz testy żeby sobie to łatwo sprawdzić.
-            if (current.Products.ContainsKey(productToAdd))
-            {
-                current.Products[productToAdd] += quantityToAdd;
-            }
-            else
-            {
-                current.Products.Add(productToAdd, quantityToAdd);
-            }
-          
+        public void UpdateCart(Guid userId, Cart current)
+        {
             _cartRepository.UpdateCart(userId, current);
         }
+
+        public double CountCartValue(Guid userId)
+        {
+             return _cartRepository.CountCartValue(userId);
+        }
+
+        public void AddProductToCart(Guid userId, Product productToAdd, int quantity)
+        {
+            _cartRepository.AddProductToCart(userId, productToAdd, quantity);
+        }
+
+        public int TakeProductFromTheCart(Guid userId, int idProductToRemove)
+        {
+            Product productToRemove = _productRepository.FindProductById(idProductToRemove);
+            return _cartRepository.TakeProductFromTheCart(userId, productToRemove);
+        }
+
+
+        //public void AddProductToCart(Guid userId, int productId, int quantityToAdd)
+        //{
+        //    Cart current = _cartRepository.FindOrCreateCartByUserId(userId);
+        //    Product productToAdd = _productRepository.FindProductById(productId);
+
+        //    // zastanawiam się czy by nie zadziałało gdybyś po prostu napisał:
+        //    // current.Products[productToAdd] += quantityToAdd;
+        //    // bez żadnych if-ów, ale to potrzebujesz testy żeby sobie to łatwo sprawdzić.
+        //    if (current.Products.ContainsKey(productToAdd))
+        //    {
+        //        current.Products[productToAdd] += quantityToAdd;
+        //    }
+        //    else
+        //    {
+        //        current.Products.Add(productToAdd, quantityToAdd);
+        //    }
+
+        //    _cartRepository.UpdateCart(userId, current);
+        //}
     }
 }
 

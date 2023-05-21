@@ -48,5 +48,28 @@ namespace CerteecStore.Application.Carts
             userCart.Products.Add(productToAdd, quantity);
             
         }
+
+        public int TakeProductFromTheCart(Guid userId, Product productToRemove)
+        {
+
+            //This function needs to be Fixed. Throwing expection at line 60.
+            // problem occuring while removing Value by key;
+            Cart userCart = FindOrCreateCartByUserId(userId);
+            try
+            {
+                userCart.Products[productToRemove] -= 1;
+                if (userCart.Products[productToRemove] < 1)
+                {
+                    userCart.Products.Remove(productToRemove);
+                }
+                return userCart.Products[productToRemove];
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
+          
+        }
     }
 }

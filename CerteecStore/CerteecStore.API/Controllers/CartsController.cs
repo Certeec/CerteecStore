@@ -8,13 +8,15 @@ namespace CerteecStore.API.Controllers
     [Route("[controller]")]
     public class CartsController : Controller
     {
-        private ICartRepository _cartRepository;
-        private IProductRepository _productRepository;
+        private CartService _cartService;
+        private readonly IProductRepository _productRepository;
+
 
         public CartsController()
         {
-            _cartRepository = new InMemoryCartRepository();
+            InMemoryCartRepository cartRepository = new InMemoryCartRepository();
             _productRepository = new InMemoryProductRepository();
+            _cartService = new CartService(cartRepository, _productRepository);
         }
 
 
@@ -22,14 +24,14 @@ namespace CerteecStore.API.Controllers
         [HttpGet("FindCartById{userId}")]
         public IActionResult FindCartByUserId(Guid userId)
         {
-            Cart userCart = _cartRepository.FindOrCreateCartByUserId(userId);
+            Cart userCart = _cartService.FindOrCreateCartByUserId(userId);
             return Ok(userCart);
         }
 
         [HttpGet("CountCartValue{userId}")]
         public IActionResult CountCartValue(Guid userId)
         {
-            double value = _cartRepository.CountCartValue(userId);
+            double value = _cartService.CountCartValue(userId);
             return Ok(value);
         }
 
@@ -37,10 +39,19 @@ namespace CerteecStore.API.Controllers
         public IActionResult AddProductToCart(Guid userId, int productId, int quantity)
         {
             Product productToAdd = _productRepository.FindProductById(productId);
-            _cartRepository.AddProductToCart(userId, productToAdd, quantity);
+            _cartService.AddProductToCart(userId, productToAdd, quantity);
             return Ok();
         }
 
+        [HttpDelete("RemoveSingleQuantityOfProductInCart{userId}/{productId}")]
+        public IActionResult DeleteOneItemOfProductInCart(Guid userId, int productId)
+        {
+            int quantityLeft = _cartService.TakeProductFromTheCart(userId, productId);
+            return Ok(quantityLeft);
+            /// Wiec tak... celem jest zwrocenie ile zostalo przedmiotow tego typu.
+            /// czy powinienem zwrocic sama liczbe, czy jakas informacje + liczbe
+            ///  np this product left in cart :  quanityLeft
+        }
     }
 
 }
