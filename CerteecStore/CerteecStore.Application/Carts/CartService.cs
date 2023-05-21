@@ -45,6 +45,12 @@ namespace CerteecStore.Application.Carts
             return _cartRepository.TakeProductFromTheCart(userId, productToRemove);
         }
 
+        public Dictionary<Product, int> ShowAllProductsInCart(Guid userId)
+        {
+            Cart userCart = _cartRepository.FindOrCreateCartByUserId(userId);
+            return userCart.Products;
+        }
+
 
         //public void AddProductToCart(Guid userId, int productId, int quantityToAdd)
         //{

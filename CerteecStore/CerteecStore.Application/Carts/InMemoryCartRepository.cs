@@ -46,6 +46,7 @@ namespace CerteecStore.Application.Carts
         {
             Cart userCart = FindOrCreateCartByUserId(userId);
             userCart.Products.Add(productToAdd, quantity);
+            UpdateCart(userId, userCart);
             
         }
 

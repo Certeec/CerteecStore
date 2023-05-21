@@ -32,7 +32,15 @@ namespace CerteecStore.Application.UnitTests.Cart
             Guid user = Guid.NewGuid();
             int productId = 1;
             int quantityToADd = 1;
-            InMemoryDatabase.Prodcuts.Add(new Product()
+            Product product = new Product()
+            {
+                ProductId = 1,
+                Description = "none",
+                ItemPrice = 1,
+                Name = "Product",
+                Quantity = 1
+            };
+                InMemoryDatabase.Prodcuts.Add(new Product()
             {
                 ProductId = 1,
                 Description = "none",
@@ -42,11 +50,12 @@ namespace CerteecStore.Application.UnitTests.Cart
             });
 
 
+
             //Act
-           // currentServiceUT.AddProductToCart(user, 1, 1);
+            currentServiceUT.AddProductToCart(user, product, 1);
 
             //Assert
-           // InMemoryDatabase.Carts[user].Products.Should().ContainValue(1);
+            InMemoryDatabase.Carts[user].Products.Should().ContainValue(1);
 
 
         }

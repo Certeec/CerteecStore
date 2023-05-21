@@ -52,6 +52,13 @@ namespace CerteecStore.API.Controllers
             /// czy powinienem zwrocic sama liczbe, czy jakas informacje + liczbe
             ///  np this product left in cart :  quanityLeft
         }
+
+        [HttpGet("ShowAllProductsInCart{userId}")]
+        public IActionResult ShowAllProductsInCart(Guid userId)
+        {
+            return Ok(_cartService.ShowAllProductsInCart(userId));
+            ///Will Throw error, since you cannot return dictionary.... 
+        }
     }
 
 }
