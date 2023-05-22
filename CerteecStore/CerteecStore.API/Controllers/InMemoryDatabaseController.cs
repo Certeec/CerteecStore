@@ -13,15 +13,19 @@ namespace CerteecStore.API.Controllers
         ///Tylko to potrzebowalem na chwile.. a nie wiedzialem jak zrobic auto zapisywanie przy zamykaniu programu, watpie 
         ///abysmy potrzebowali zapisywanie do pliku na stale...
     {
-        private IProductRepository _productRepository;
+        private IProductRepository _productRepository; //nieużywane
 
         [HttpPost("SaveDatabaseToFile")]
         public IActionResult SaveDatabaseToFile()
         {
             Console.WriteLine("Saved Database");
-           bool result = InMemoryDatabase.SaveProductsToFile();
+            // Według mnie nazwa jest niewdzięczna, bo jak robisz eksport to powinieneś eksportować wszystko, a nie tylko produkty.
+            bool result = InMemoryDatabase.SaveProductsToFile();
             return Ok(result);
         }
+
+        // Ogólnie to według mnie bez sensu szukać specjalnego mechanizmu, który wyeksportuje przy wyłączaniu programu,
+        // lepiej zostawić jak jest, że eksportujesz na żadanie tak jak teraz.
 
     }
 }

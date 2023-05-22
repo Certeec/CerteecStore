@@ -4,7 +4,7 @@ namespace CerteecStore.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : ControllerBase // To chyba mo¿na usun¹æ wszystko
     {
         private static readonly string[] Summaries = new[]
         {

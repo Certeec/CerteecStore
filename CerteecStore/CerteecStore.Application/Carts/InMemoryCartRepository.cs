@@ -8,6 +8,9 @@ using CerteecStore.Application.Database;
 
 namespace CerteecStore.Application.Carts
 {
+    // Według mnie trochę jeszcze nie czujesz przeznaczenia tych repozytoriów. One mają odpowiadać tylko i wyłącznie za
+    // komunikację z bazą danych w miarę prostych metodach. Dodałem w interfejsie ICartRepository metody, które według mnie
+    // powinny się tam znaleźć, a reszta logiki, która spełnia Twoje wymagania powinna trafić do CartService.
     public class InMemoryCartRepository :  ICartRepository
     {
 
@@ -24,6 +27,10 @@ namespace CerteecStore.Application.Carts
                 /// I tutaj ten sam problem.. Po co.. mi zwracac
                 /// ten pusty new Cart.. skoro itak go nie wkladam do bazy..
                 /// moge ewentualnie go wlozyc z CartService.. ale w sumie po co?..
+                
+                // Według mnie ten design jest bez sensu. Ogólnie chcesz zawsze żeby klasy typu "Repository"
+                // miały jak najmniej dodatkowej logiki, a jedynie taką która odpowiada za dodawanie/usuwanie elementów z bazy.
+                // Funkcjonlaność tworzenia koszyka przeniósłbym do CartServie, bo tam jest logika biznesowa.
             }
         }
 

@@ -51,6 +51,8 @@ namespace CerteecStore.API.Controllers
             /// Wiec tak... celem jest zwrocenie ile zostalo przedmiotow tego typu.
             /// czy powinienem zwrocic sama liczbe, czy jakas informacje + liczbe
             ///  np this product left in cart :  quanityLeft
+            
+            // ok jest zwrócić samą liczbę, ponieważ ktoś kto wywoła ten endpoint wie jaki produkt usunął, bo ma ID.
         }
 
         [HttpGet("ShowAllProductsInCart{userId}")]

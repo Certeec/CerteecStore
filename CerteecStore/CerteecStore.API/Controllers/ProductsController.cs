@@ -40,5 +40,8 @@ namespace CerteecStore.API.Controllers
         /// pytanie czy powinno sie dac usunac produkt normalnie z listy..
         /// czy moze lepiej zrobic cos w stylu bIsAcitve 0/1;
         
+        // To zależy od wymagań biznesowych zawsze. Według mnie produkt nie jest rzeczą "trwałą", która zawsze powinna istnieć.
+        // Produkty się usuwa, potem dodaje itd. to nie ma wpływu na działanie programu. Inna sprawa może się mieć z użytkownikiem,
+        // którego mógłbyś się zastanowić czy usuwać jak usuwa konto czy lepiej go zdezaktywować, bo może mieć zależności do jakichś transakcji itd.
     }
 }

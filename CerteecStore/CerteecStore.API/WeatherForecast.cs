@@ -1,6 +1,6 @@
 namespace CerteecStore.API
 {
-    public class WeatherForecast
+    public class WeatherForecast // Chyba mo¿na usun¹æ
     {
         public DateTime Date { get; set; }
 

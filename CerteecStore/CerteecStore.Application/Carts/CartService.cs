@@ -54,6 +54,18 @@ namespace CerteecStore.Application.Carts
 
             /// Ta funckja na razie nie dziala ( i wszystkie pochodne czyli wolanie itp)
             /// dlatego ze nie moge zwracac dictionary w Api wiec musze to inaczej wymyslic.
+
+            // tutaj możnaby wprowadzić nowy obiekt, który się nazywa DTO (Data Table Object), który jest taką wydmuszką do wyświetlania danych:
+            //class ProductInCart
+            //{
+            //    public string Name { get; set; }
+
+            //    public double Price { get; set; }
+
+            //    public int Quantity { get; set; }
+            //}
+            // wtedy mógłbyś zwrócić List<ProductInCart> - możesz użyć do tego Select z LINQ, pamiętaj, że QUantity to jest liczba w koszyku, a nie liczba z produktu.
+            // O DTO pogadamy sobie więcej w środę.
         }
 
 

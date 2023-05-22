@@ -14,6 +14,7 @@ namespace CerteecStore.Application.Database
         public static List<Product> Prodcuts = new List<Product>();
 
         ///Rozwazam  przerobienie listy Products na dictionary Products, Int( ilosc)
+        // A czemu właściwie? Ja np. w ogóle nie jestem za bardzo fanem słowników tutaj, tylko lepiej gdyby to były listy.
 
         public static Dictionary<Guid, Cart> Carts = new Dictionary<Guid, Cart>();
 
