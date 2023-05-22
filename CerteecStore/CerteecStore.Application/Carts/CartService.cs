@@ -21,7 +21,8 @@ namespace CerteecStore.Application.Carts
 
         public Cart FindOrCreateCartByUserId(Guid userId)
         {
-            return _cartRepository.FindOrCreateCartByUserId(userId);
+           return _cartRepository.FindOrCreateCartByUserId(userId);
+           
         }
 
         public void UpdateCart(Guid userId, Cart current)
@@ -36,7 +37,8 @@ namespace CerteecStore.Application.Carts
 
         public void AddProductToCart(Guid userId, Product productToAdd, int quantity)
         {
-            _cartRepository.AddProductToCart(userId, productToAdd, quantity);
+            Cart userCart = _cartRepository.AddProductToCart(userId, productToAdd, quantity);
+            UpdateCart(userId, userCart);
         }
 
         public int TakeProductFromTheCart(Guid userId, int idProductToRemove)
@@ -49,6 +51,9 @@ namespace CerteecStore.Application.Carts
         {
             Cart userCart = _cartRepository.FindOrCreateCartByUserId(userId);
             return userCart.Products;
+
+            /// Ta funckja na razie nie dziala ( i wszystkie pochodne czyli wolanie itp)
+            /// dlatego ze nie moge zwracac dictionary w Api wiec musze to inaczej wymyslic.
         }
 
 

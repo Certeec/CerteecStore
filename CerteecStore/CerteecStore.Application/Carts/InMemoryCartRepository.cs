@@ -20,6 +20,10 @@ namespace CerteecStore.Application.Carts
             catch(Exception e)
             {
                 return new Cart();
+
+                /// I tutaj ten sam problem.. Po co.. mi zwracac
+                /// ten pusty new Cart.. skoro itak go nie wkladam do bazy..
+                /// moge ewentualnie go wlozyc z CartService.. ale w sumie po co?..
             }
         }
 
@@ -42,19 +46,19 @@ namespace CerteecStore.Application.Carts
             return value;
         }
 
-        public void AddProductToCart(Guid userId, Product productToAdd, int quantity)
+        public Cart AddProductToCart(Guid userId, Product productToAdd, int quantity)
         {
             Cart userCart = FindOrCreateCartByUserId(userId);
             userCart.Products.Add(productToAdd, quantity);
-            UpdateCart(userId, userCart);
+            return userCart;
             
         }
 
         public int TakeProductFromTheCart(Guid userId, Product productToRemove)
         {
 
-            //This function needs to be Fixed. Throwing expection at line 60.
-            // problem occuring while removing Value by key;
+            ///This function needs to be Fixed. Throwing expection at line 60.
+           /// problem occuring while removing Value by key;
             Cart userCart = FindOrCreateCartByUserId(userId);
             try
             {
@@ -63,6 +67,13 @@ namespace CerteecStore.Application.Carts
                 {
                     userCart.Products.Remove(productToRemove);
                 }
+                UpdateCart(userId, userCart); /// I tutaj widze problem
+                /// bo w jedyn miejscu wywoluje updateCart z Cartservice
+                /// przez co jest bezpieczniej... bo nie pomyli sie ktos w klasach pod interface..
+                /// ale wtedy nie zwroce latwo informacji ile zostalo przedmiotow tego rodzaju..
+                /// Wydaje mi sie ze powinienem ALbo
+                /// A nie zwracac ilosci ile przedmiotow zostalo...
+                /// B zwracac ale logike tego zrobic po stronie Service...
                 return userCart.Products[productToRemove];
             }
             catch(Exception e)
@@ -72,5 +83,9 @@ namespace CerteecStore.Application.Carts
             }
           
         }
+
+        /// Ogolnie chce dokonczyc ogarniac ten syf co sie tutaj porobil i zrobic testy
+        /// zeby pozniej to jakos sensowniej przepisywac... tylko
+        /// obecnie caly czas sie zmienia design jak sobie znajduje nastepne prolbemy..
     }
 }

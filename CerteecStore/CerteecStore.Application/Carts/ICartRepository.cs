@@ -12,7 +12,7 @@ namespace CerteecStore.Application.Carts
         Cart FindOrCreateCartByUserId(Guid userId);
         void UpdateCart(Guid userId, Cart current);
         double CountCartValue(Guid userId);
-        void AddProductToCart(Guid userId, Product productToAdd, int quantity);
+        Cart AddProductToCart(Guid userId, Product productToAdd, int quantity);
         int TakeProductFromTheCart(Guid userId, Product productToRemove);
     }
 }

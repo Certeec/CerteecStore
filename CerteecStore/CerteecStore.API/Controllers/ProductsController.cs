@@ -35,6 +35,10 @@ namespace CerteecStore.API.Controllers
             Console.WriteLine("New Item Added");
             return Ok(product);
         }
+
+        /// tu sie powinno pojawic jeszcze remove product?
+        /// pytanie czy powinno sie dac usunac produkt normalnie z listy..
+        /// czy moze lepiej zrobic cos w stylu bIsAcitve 0/1;
         
     }
 }

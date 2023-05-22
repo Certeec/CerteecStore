@@ -13,7 +13,11 @@ namespace CerteecStore.Application.Database
     {
         public static List<Product> Prodcuts = new List<Product>();
 
+        ///Rozwazam  przerobienie listy Products na dictionary Products, Int( ilosc)
+
         public static Dictionary<Guid, Cart> Carts = new Dictionary<Guid, Cart>();
+
+        ///Rozwazam przeobienia Carts na Guid, Int(id Produktu)
 
         public static void ReadProductsFromFile()
         {
