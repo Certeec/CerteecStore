@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CerteecStore.Application.UnitTests.Cart
+namespace CerteecStore.Application.UnitTests.Carts
 {
     internal class CartServiceTests
     {
@@ -56,7 +56,6 @@ namespace CerteecStore.Application.UnitTests.Cart
 
             //Assert
             InMemoryDatabase.Carts[user].Products.Should().ContainValue(1);
-
 
         }
 
