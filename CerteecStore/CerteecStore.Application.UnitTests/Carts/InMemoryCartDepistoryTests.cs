@@ -30,7 +30,7 @@ namespace CerteecStore.Application.UnitTests.Carts
             InMemoryDatabase.Carts.Add(userId, userCart);
 
             //Act
-            Cart result = _repositoryUT.FindOrCreateCartByUserId(userId);
+            Cart result = _repositoryUT.GetCartByUserId(userId);
 
             //Assert
             result.Should().BeSameAs(userCart);
@@ -44,13 +44,12 @@ namespace CerteecStore.Application.UnitTests.Carts
             Guid userId = Guid.NewGuid();
             Cart userCart = new Cart();
             InMemoryDatabase.Carts.Add(Guid.Empty, userCart);
-            Cart emptyCart = new Cart();
 
             //Act
-            Cart result = _repositoryUT.FindOrCreateCartByUserId(userId);
+            Cart result = _repositoryUT.GetCartByUserId(userId);
 
             //Assert
-            result.Should().BeEquivalentTo(emptyCart);
+            result.Should().BeNull();
             result.Should().NotBeSameAs(userCart);
 
         }

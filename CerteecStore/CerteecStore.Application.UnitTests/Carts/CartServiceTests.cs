@@ -52,7 +52,8 @@ namespace CerteecStore.Application.UnitTests.Carts
 
 
             //Act
-            currentServiceUT.AddProductToCart(user, product, 1);
+            currentServiceUT.AddProductToCart(user, 1, 1);
+            // may throw error after recent changes with method OF Finding product id.
 
             //Assert
             InMemoryDatabase.Carts[user].Products.Should().ContainValue(1);

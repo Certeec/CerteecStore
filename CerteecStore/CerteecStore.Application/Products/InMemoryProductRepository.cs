@@ -19,6 +19,7 @@ namespace CerteecStore.Application.Products
             InMemoryDatabase.Prodcuts.RemoveAll(n => n.ProductId == id);
             return true;
             ///Is not Crashing while item doesnt exist
+            /// tu miales mi cos na ten temat podrzucic 
         }
 
         public Product FindProductById(int productId)

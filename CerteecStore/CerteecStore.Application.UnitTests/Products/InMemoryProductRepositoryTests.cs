@@ -27,8 +27,6 @@ namespace CerteecStore.Application.UnitTests.Products
             //Assert
         }
 
-
-
         [TearDown]
         public void TearDown()
         {

@@ -14,12 +14,6 @@ namespace CerteecStore.API.Controllers
             _productRepository = new InMemoryProductRepository();
         }
 
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return Ok();
-        }
-
         [HttpGet("ShowProducts")]
         public IActionResult ShowAllProducts()
         {
@@ -43,5 +37,8 @@ namespace CerteecStore.API.Controllers
         // To zależy od wymagań biznesowych zawsze. Według mnie produkt nie jest rzeczą "trwałą", która zawsze powinna istnieć.
         // Produkty się usuwa, potem dodaje itd. to nie ma wpływu na działanie programu. Inna sprawa może się mieć z użytkownikiem,
         // którego mógłbyś się zastanowić czy usuwać jak usuwa konto czy lepiej go zdezaktywować, bo może mieć zależności do jakichś transakcji itd.
+
+        /// myslalem pod katem tego ze pracownik usuwa produkt przez przypadek i potem maja problem aby odnalezc ile ich realnie maja
+        /// ale jak mowisz ze mozemy normalnie usunac to git :P 
     }
 }

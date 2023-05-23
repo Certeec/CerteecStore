@@ -9,18 +9,16 @@ namespace CerteecStore.Application.Carts
 {
     public interface ICartRepository
     {
-        Cart FindOrCreateCartByUserId(Guid userId); // według mnie tworzenie koszyka w repozytorium to strzał w kolano, bo to jest duży szczegół biznesowy, lepiej to robić w serwisie, a po prostu później dodać nowy do bazy. Czyli weź koszyk, jak nie ma to utwórz i zapisz.
+        Cart GetCartByUserId(Guid userId); /// Przneioslem Jedynie zwracam nulla
         void UpdateCart(Guid userId, Cart current);
-        double CountCartValue(Guid userId); // w tym przypadku chcesz zwrócić produkty, a policzyć je w serwisie
-        Cart AddProductToCart(Guid userId, Product productToAdd, int quantity); // bardziej wolisz isć w kierunku Weź koszyk -> dodaj produkt -> zrób update koszyka
-        int TakeProductFromTheCart(Guid userId, Product productToRemove); // to samo co prz dodawaniu produktu
+        bool CreateCart(Guid userId, Cart cart);
 
-        //Cart GetCartByUserId(Guid userId);
-
-        //void UpdateCart(Cart cart);
+        //void UpdateCart(Cart cart); /// czy napewno sam cart? dopisanie Guid ulatwia walidacje +
+        /// pozwala na dodanie nowego carta w jednej funkcji
 
         //void/id/Cart CreateCart(Cart cart); - Zależy od Ciebie co chcesz zwracać, zwykle zwraca się ID utworzonego obiektu, ale możesz zwrócić cały
-
-        //List<Product> GetProductsFromCartByUserId(Guid userId);
+        /// a Jak moge zwrocic id utworzonego objektu gdy on nie ma id? 
+        //List<Product> GetProductsFromCartByUserId(Guid userId); 
+        /// czy potrzebujemy ta funckje? skoro wyciagamy caly koszyk poprzez fumckje getCart?
     }
 }
