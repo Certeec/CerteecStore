@@ -21,6 +21,10 @@ namespace CerteecStore.Application.Database
 
         ///Rozwazam przeobienia Carts na Guid, Int(id Produktu)
 
+
+        /// Sroda: dopytac czy moozna uzyc delegata aby wywolac inna metody w miesjscu zaznaczonym
+        /// Czy moze lepiej zrobic klase virtualna i ja nadpisywac dla metod kolejnych....
+
         public static void ReadProductsFromFile()
         {
             string url = "C:\\Users\\AiutJeKokot\\Desktop\\Repozytorium\\certProj\\CerteecStore\\test.txt";
@@ -32,6 +36,8 @@ namespace CerteecStore.Application.Database
                     while ((srLine = sr.ReadLine()) != null)
                     {
                         Prodcuts.Add(ReadProductFromString(srLine));
+                        /// TU 
+
                     }
 
                 }
