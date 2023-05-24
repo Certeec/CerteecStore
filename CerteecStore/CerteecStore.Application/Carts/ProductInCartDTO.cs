@@ -10,15 +10,8 @@ namespace CerteecStore.Application.Carts
     {
         public double ProductId { get; set; }
         public string Name { get; set; }
-        public double Price { get; set; }
+        public double UnitPrice { get; set; }
         public int Quantity { get; set; }
-
-        //public ProductInCart(double productId, string name, double price, int quantity)
-        //{
-        //    ProductId = productId;
-        //    Name = name;
-        //    Price = price;
-        //    Quantity = quantity;
-        //}
+        public double TotalPrice => UnitPrice * Quantity;
     }
 }

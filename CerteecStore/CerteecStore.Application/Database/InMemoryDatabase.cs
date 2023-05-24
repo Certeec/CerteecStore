@@ -13,17 +13,9 @@ namespace CerteecStore.Application.Database
     {
         public static List<Product> Prodcuts = new List<Product>();
 
-        ///Rozwazam  przerobienie listy Products na dictionary Products, Int( ilosc)
-        // A czemu właściwie? Ja np. w ogóle nie jestem za bardzo fanem słowników tutaj, tylko lepiej gdyby to były listy.
-        /// Ok to juz sie wyjasnilo po tych poprawkach i fakt nie ma sensu... A to co na dole napisalem?
-
         public static Dictionary<Guid, Cart> Carts = new Dictionary<Guid, Cart>();
 
         ///Rozwazam przeobienia Carts na Guid, Int(id Produktu)
-
-
-        /// Sroda: dopytac czy moozna uzyc delegata aby wywolac inna metody w miesjscu zaznaczonym
-        /// Czy moze lepiej zrobic klase virtualna i ja nadpisywac dla metod kolejnych....
 
         public static void ReadProductsFromFile()
         {
@@ -47,6 +39,8 @@ namespace CerteecStore.Application.Database
                 Console.WriteLine($"the errors is : {e}");
             }
         }
+
+        ///Json Convert Serialize/ Deserialize
 
         private static Product ReadProductFromString(string line)
         {

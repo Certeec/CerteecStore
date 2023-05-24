@@ -101,8 +101,7 @@ namespace CerteecStore.Application.Carts
                 {
                     ProductId = product.Key.ProductId,
                     Name = product.Key.Name,
-                    Price = product.Key.ItemPrice, /// Zastanawiam sie czy nie jest to mylace.. bo jak masz produkt w ilosci 2...
-                     /// to wtedy ci pokaze cene jednego produktu..i czy frontend bd wiedzial aby to mnozyc ?w sensie Price * quantity = FinalPrice?
+                    UnitPrice = product.Key.ItemPrice,
                     Quantity = product.Value
                 };
                 productsTransformed.Add(productTransformed);

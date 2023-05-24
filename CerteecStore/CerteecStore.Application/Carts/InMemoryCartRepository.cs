@@ -11,16 +11,13 @@ namespace CerteecStore.Application.Carts
     public class InMemoryCartRepository :  ICartRepository
     {
 
-        public Cart GetCartByUserId(Guid id)
+        public Cart? GetCartByUserId(Guid id)
         {
-            try
-            {
-                return InMemoryDatabase.Carts.First(n => n.Key == id).Value;
-            }
-            catch(Exception e)
-            {
-                return null;
-            }
+            ////Tenary conditional Operator
+            bool result = InMemoryDatabase.Carts.TryGetValue(id, out Cart? currentCart);
+
+            return result ? currentCart : null;
+            
         }
 
         public void UpdateCart(Guid userId, Cart current)
@@ -30,15 +27,9 @@ namespace CerteecStore.Application.Carts
 
         public bool CreateCart(Guid userId, Cart userCart)
         {
-            try
-            {
-                InMemoryDatabase.Carts.Add(userId, userCart);
-                return true;
-            }
-            catch(Exception e)
-            {
-                return false;
-            }
+            InMemoryDatabase.Carts.Add(userId, userCart);
+            return true; 
+            // do ogarniecia
         }
     }
 }
