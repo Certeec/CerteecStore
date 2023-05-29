@@ -8,26 +8,22 @@ using CerteecStore.Application.Products;
 
 namespace CerteecStore.Application.Carts
 {
-    public class CartService 
+    public class CartService : ICartService
     {
         private readonly ICartRepository _cartRepository; 
-        private readonly IProductRepository _productRepository;
+        private readonly IProductService _productRepository;
 
-        public CartService(ICartRepository cartRepository, IProductRepository productRepository)
+        public CartService(ICartRepository cartRepository, IProductService productService)
         {
             _cartRepository = cartRepository;
-            _productRepository = productRepository;
+            _productRepository = productService;
         }
         
-        public Cart FindOrCreateCartByUserId(Guid userId)
+        public Cart FindCartByUserId(Guid userId)
         {
            Cart userCart = _cartRepository.GetCartByUserId(userId);
-            if(userCart == null)
-            {
-                userCart = new Cart();
-                _cartRepository.CreateCart(userId, userCart);
-            }
-            return userCart;
+
+           return userCart;
         }
 
         public void UpdateCart(Guid userId, Cart current)
@@ -37,22 +33,21 @@ namespace CerteecStore.Application.Carts
 
         public double CountCartValue(Guid userId)
         {
-            double value = 0;
-            Cart userCart = FindOrCreateCartByUserId(userId);
-            for (int i = 0; i < userCart.Products.Count(); i++)
-            {
-                Product current = userCart.Products.ElementAt(i).Key;
-                int multiplyBy = userCart.Products.ElementAt(i).Value;
-                value += current.ItemPrice * multiplyBy;
-            }
+            Cart userCart = FindCartByUserId(userId);
 
-            return value;
+            return userCart.Products.Sum(n => n.Key.ItemPrice * n.Value);
         }
 
-        public void AddProductToCart(Guid userId, int idProductToAdd, int quantity)
+        //Coalesc operator ??
+        public bool AddProductToCart(Guid userId, int idProductToAdd, int quantity)
         {
             Product productToAdd = _productRepository.FindProductById(idProductToAdd);
-            Cart userCart = FindOrCreateCartByUserId(userId);
+            if (productToAdd == null)
+            {
+                return false;
+            }
+
+            Cart userCart = FindCartByUserId(userId) ?? CreateCart(userId);
             if(userCart.Products.ContainsKey(productToAdd))
             {
                 userCart.Products[productToAdd] += quantity;
@@ -63,12 +58,21 @@ namespace CerteecStore.Application.Carts
             }
 
             UpdateCart(userId, userCart);
+            return true;
         }
 
-        public int TakeProductFromTheCart(Guid userId, int idProductToRemove)
+        public Cart CreateCart(Guid userId)
+        {
+            Cart userCart = new Cart();
+            _cartRepository.CreateCart(userId, userCart);
+
+            return userCart;
+        }
+
+        public int RemoveOneProductFromTheCart(Guid userId, int idProductToRemove)
         {
             Product productToRemove = _productRepository.FindProductById(idProductToRemove);
-            Cart userCart = FindOrCreateCartByUserId(userId);
+            Cart userCart = FindCartByUserId(userId);
             try
             {
                 userCart.Products[productToRemove] -= 1;
@@ -91,25 +95,23 @@ namespace CerteecStore.Application.Carts
             }
         }
 
+        //FailFast - check 
         public List<ProductInCartDTO> ShowAllProductsInCart(Guid userId)
         {
-            Cart userCart = _cartRepository.GetCartByUserId(userId);
-            List<ProductInCartDTO> productsTransformed = new List<ProductInCartDTO>();
-            foreach(var product in userCart.Products)
+            Cart userCart = FindCartByUserId(userId);
+            if (userCart == null)
             {
-                ProductInCartDTO productTransformed = new ProductInCartDTO()
-                {
-                    ProductId = product.Key.ProductId,
-                    Name = product.Key.Name,
-                    UnitPrice = product.Key.ItemPrice,
-                    Quantity = product.Value
-                };
-                productsTransformed.Add(productTransformed);
+                return new List<ProductInCartDTO>();
             }
-            return productsTransformed;
 
+            return userCart.Products.Select(n => new ProductInCartDTO
+            {
+                Name = n.Key.Name,
+                ProductId = n.Key.ProductId,
+                Quantity = n.Value,
+                UnitPrice = n.Key.ItemPrice
+            }).ToList<ProductInCartDTO>();
         }
-
     }
 }
 

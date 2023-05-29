@@ -10,26 +10,28 @@ namespace CerteecStore.Application.Carts
 {
     public class InMemoryCartRepository :  ICartRepository
     {
+        InMemoryDatabase _memoryDatbase;
+        public InMemoryCartRepository(InMemoryDatabase memoryDatbase)
+        {
+            _memoryDatbase = memoryDatbase;
+        }
 
         public Cart? GetCartByUserId(Guid id)
         {
             ////Tenary conditional Operator
-            bool result = InMemoryDatabase.Carts.TryGetValue(id, out Cart? currentCart);
+            bool result = _memoryDatbase.Carts.TryGetValue(id, out Cart? currentCart);
 
             return result ? currentCart : null;
-            
         }
 
         public void UpdateCart(Guid userId, Cart current)
         {
-            InMemoryDatabase.Carts[userId] = current;
+            _memoryDatbase.Carts[userId] = current;
         }
 
-        public bool CreateCart(Guid userId, Cart userCart)
+        public void CreateCart(Guid userId, Cart userCart)
         {
-            InMemoryDatabase.Carts.Add(userId, userCart);
-            return true; 
-            // do ogarniecia
+            _memoryDatbase.Carts.Add(userId, userCart);
         }
     }
 }

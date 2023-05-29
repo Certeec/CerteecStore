@@ -14,14 +14,20 @@ namespace CerteecStore.API.Controllers
         ///abysmy potrzebowali zapisywanie do pliku na stale...
         
     {
-        private IProductRepository _productRepository; //nieużywane
+        private InMemoryDatabase _memoryDatabase;
+        
+        public InMemoryDatabaseController(InMemoryDatabase  memoryDatabase)
+        {
+            _memoryDatabase = memoryDatabase;
+        }
+
 
         [HttpPost("SaveProductsToFileFromDatabase")]
         public IActionResult SaveDatabaseToFile()
         {
             Console.WriteLine("Saved Database");
             // Według mnie nazwa jest niewdzięczna, bo jak robisz eksport to powinieneś eksportować wszystko, a nie tylko produkty.
-            bool result = InMemoryDatabase.SaveProductsToFile();
+            bool result = _memoryDatabase.SaveProductsToFile();
             return Ok(result);
         }
 

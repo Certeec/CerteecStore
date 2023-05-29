@@ -1,6 +1,7 @@
 ﻿using CerteecStore.Application.Carts;
 using CerteecStore.Application.Products;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 
 namespace CerteecStore.API.Controllers
 {
@@ -8,21 +9,19 @@ namespace CerteecStore.API.Controllers
     [Route("[controller]")]
     public class CartsController : Controller
     {
-        private CartService _cartService;
-        private readonly IProductRepository _productRepository;
+        private ICartService _cartService;
 
-        public CartsController()
+        public CartsController(ICartService cartService)
         {
-            InMemoryCartRepository cartRepository = new InMemoryCartRepository();
-            _productRepository = new InMemoryProductRepository();
-            _cartService = new CartService(cartRepository, _productRepository);
+            _cartService = cartService;
         }
 
         [HttpGet("FindCartById{userId}")]
         public IActionResult FindCartByUserId(Guid userId)
         {
-            Cart userCart = _cartService.FindOrCreateCartByUserId(userId);
-            return Ok(userCart);
+            Cart userCart = _cartService.FindCartByUserId(userId);
+            return userCart != null ? Ok(userCart) : NotFound();
+            //Midleware (google it) 
         }
 
         [HttpGet("CountCartValue{userId}")]
@@ -35,15 +34,15 @@ namespace CerteecStore.API.Controllers
         [HttpPost("AddProductToCart{userId}/{productId}/{quantity}")]
         public IActionResult AddProductToCart(Guid userId, int productId, int quantity)
         {
-            _cartService.AddProductToCart(userId, productId, quantity);
-            return Ok();
+            var result = _cartService.AddProductToCart(userId, productId, quantity);
+            return result == true ? Ok() : NotFound();
         }
 
         [HttpDelete("RemoveSingleQuantityOfProductInCart{userId}/{productId}")]
         public IActionResult DeleteOneItemOfProductInCart(Guid userId, int productId)
         {
-            int quantityLeft = _cartService.TakeProductFromTheCart(userId, productId);
-            return Ok(quantityLeft);
+            int quantityLeft = _cartService.RemoveOneProductFromTheCart(userId, productId);
+            return quantityLeft != -1 ? Ok(quantityLeft) : NotFound(); 
         }
 
         [HttpGet("ShowAllProductsInCart{userId}")]

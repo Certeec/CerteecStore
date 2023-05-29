@@ -7,38 +7,43 @@ namespace CerteecStore.API.Controllers
     [Route("[controller]")]
     public class ProductsController : Controller
     {
-        private IProductRepository _productRepository;
+        private readonly IProductService _productService;
 
-        public ProductsController()
+        public ProductsController(IProductService productService)
         {
-            _productRepository = new InMemoryProductRepository();
+            _productService = productService;
         }
 
         [HttpGet("ShowProducts")]
         public IActionResult ShowAllProducts()
         {
-            List<Product> productList = _productRepository.ReadAll();
+            List<Product> productList = _productService.ReadAll();
 
             return Ok(productList);
         }
 
-        [HttpPost]
-        public IActionResult AddProduct([FromBody]Product product)
+        [HttpPost("AddProduct")]
+        public IActionResult AddProduct([FromBody] Product product)
         {
-            _productRepository.AddProduct(product);
-            Console.WriteLine("New Item Added");
+            _productService.AddProduct(product);
+
             return Ok(product);
         }
 
-        /// tu sie powinno pojawic jeszcze remove product?
-        /// pytanie czy powinno sie dac usunac produkt normalnie z listy..
-        /// czy moze lepiej zrobic cos w stylu bIsAcitve 0/1;
-        
-        // To zależy od wymagań biznesowych zawsze. Według mnie produkt nie jest rzeczą "trwałą", która zawsze powinna istnieć.
-        // Produkty się usuwa, potem dodaje itd. to nie ma wpływu na działanie programu. Inna sprawa może się mieć z użytkownikiem,
-        // którego mógłbyś się zastanowić czy usuwać jak usuwa konto czy lepiej go zdezaktywować, bo może mieć zależności do jakichś transakcji itd.
+        [HttpDelete("DeleteProduct{productId}")]
+        public IActionResult RemoveProduct(int productId)
+        {
+            var result = _productService.RemoveProductById(productId);
 
-        /// myslalem pod katem tego ze pracownik usuwa produkt przez przypadek i potem maja problem aby odnalezc ile ich realnie maja
-        /// ale jak mowisz ze mozemy normalnie usunac to git :P 
+            return result > 0 ? Ok(result) : NotFound();
+        }
+
+        [HttpGet("FindProductById{productId}")]
+        public IActionResult FindProductById(int productId)
+        {
+            var returnedProduct = _productService.FindProductById(productId);
+
+            return returnedProduct != null ? Ok(returnedProduct) : NotFound();
+        }
     }
 }

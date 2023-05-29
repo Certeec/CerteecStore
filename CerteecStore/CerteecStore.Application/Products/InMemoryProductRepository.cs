@@ -9,27 +9,34 @@ namespace CerteecStore.Application.Products
 {
     public class InMemoryProductRepository : IProductRepository
     {
-        public List<Product> ReadAll()
+        InMemoryDatabase _memoryDatabase;
+        
+        public InMemoryProductRepository(InMemoryDatabase database)
         {
-            return InMemoryDatabase.Prodcuts;
+            _memoryDatabase = database;
         }
 
-        public bool RemoveByProductId(int id)
+        public List<Product> ReadAll()
         {
-            InMemoryDatabase.Prodcuts.RemoveAll(n => n.ProductId == id);
-            return true;
-            ///Is not Crashing while item doesnt exist
-            /// tu miales mi cos na ten temat podrzucic 
+            return _memoryDatabase.Prodcuts; 
+        }
+
+        public int RemoveProductById(int id)
+        {
+            var result = _memoryDatabase.Prodcuts.RemoveAll(n => n.ProductId == id);
+            return result; 
+            //Miales cos tutaj podrzucic.. zrobilem zeby dzialalo
+            // ale jestem ciekaw co mialse na mysli
         }
 
         public Product FindProductById(int productId)
         {
-            return InMemoryDatabase.Prodcuts.Single(n => n.ProductId == productId);
+            return _memoryDatabase.Prodcuts.SingleOrDefault(n => n.ProductId == productId);
         }
 
         public bool AddProduct(Product productToAdd)
         {
-            InMemoryDatabase.Prodcuts.Add(productToAdd);
+            _memoryDatabase.Prodcuts.Add(productToAdd);
             return true;
         }
     }

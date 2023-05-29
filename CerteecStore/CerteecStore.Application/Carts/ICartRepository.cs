@@ -9,8 +9,8 @@ namespace CerteecStore.Application.Carts
 {
     public interface ICartRepository
     {
-        Cart? GetCartByUserId(Guid userId); /// Przneioslem Jedynie zwracam nulla
+        Cart? GetCartByUserId(Guid userId);
         void UpdateCart(Guid userId, Cart current);
-        bool CreateCart(Guid userId, Cart cart); /// na Void 
+        void CreateCart(Guid userId, Cart cart);
     }
 }

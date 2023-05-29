@@ -6,15 +6,11 @@ using System.Threading.Tasks;
 
 namespace CerteecStore.Application.Products
 {
-    public interface IProductRepository
+    public interface IProductService
     {
         List<Product> ReadAll();
-
         int RemoveProductById(int id);
-
         Product FindProductById(int productId);
-
         bool AddProduct(Product productToAdd);
-
     }
 }

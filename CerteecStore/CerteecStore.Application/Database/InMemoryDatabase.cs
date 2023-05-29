@@ -9,15 +9,16 @@ using CerteecStore.Application.Products;
 
 namespace CerteecStore.Application.Database
 {
-    public static class InMemoryDatabase
+    public  class InMemoryDatabase
     {
-        public static List<Product> Prodcuts = new List<Product>();
+        public  List<Product> Prodcuts = new List<Product>();
 
-        public static Dictionary<Guid, Cart> Carts = new Dictionary<Guid, Cart>();
+        public  Dictionary<Guid, Cart> Carts = new Dictionary<Guid, Cart>();
+
 
         ///Rozwazam przeobienia Carts na Guid, Int(id Produktu)
 
-        public static void ReadProductsFromFile()
+        public  void ReadProductsFromFile()
         {
             string url = "C:\\Users\\AiutJeKokot\\Desktop\\Repozytorium\\certProj\\CerteecStore\\test.txt";
             try
@@ -42,7 +43,7 @@ namespace CerteecStore.Application.Database
 
         ///Json Convert Serialize/ Deserialize
 
-        private static Product ReadProductFromString(string line)
+        private Product ReadProductFromString(string line)
         {
             string[] parts = line.Split(',');
             return new Product
@@ -56,7 +57,7 @@ namespace CerteecStore.Application.Database
 
         }
 
-        public static bool SaveProductsToFile()
+        public bool SaveProductsToFile()
         {
             string url = "C:\\Users\\AiutJeKokot\\Desktop\\Repozytorium\\certProj\\CerteecStore\\test.txt";
             try
@@ -78,7 +79,7 @@ namespace CerteecStore.Application.Database
 
         }
 
-        private static string ProductInString(Product productToConvert)
+        private string ProductInString(Product productToConvert)
         {
             string stringToWrite = $"{productToConvert.ProductId},{productToConvert.Name},{productToConvert.Description},{productToConvert.ItemPrice},{productToConvert.Quantity}";
 

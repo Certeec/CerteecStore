@@ -11,10 +11,11 @@ namespace CerteecStore.Application.UnitTests.Products
     internal class InMemoryProductRepositoryTests
     {
         InMemoryProductRepository _productRepositoryUT;
+        InMemoryDatabase _database = new InMemoryDatabase();
         [SetUp]
         public void SetUp()
         {
-            _productRepositoryUT = new InMemoryProductRepository();
+            _productRepositoryUT = new InMemoryProductRepository(_database);
         }
 
         [Test]
@@ -30,8 +31,8 @@ namespace CerteecStore.Application.UnitTests.Products
         [TearDown]
         public void TearDown()
         {
-            InMemoryDatabase.Carts.Clear();
-            InMemoryDatabase.Prodcuts.Clear();
+            _database.Carts.Clear();
+            _database.Prodcuts.Clear();
         }
     }
 }
