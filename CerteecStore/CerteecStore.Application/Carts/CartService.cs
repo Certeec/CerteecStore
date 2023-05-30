@@ -11,12 +11,12 @@ namespace CerteecStore.Application.Carts
     public class CartService : ICartService
     {
         private readonly ICartRepository _cartRepository; 
-        private readonly IProductService _productRepository;
+        private readonly IProductService _productService;
 
         public CartService(ICartRepository cartRepository, IProductService productService)
         {
             _cartRepository = cartRepository;
-            _productRepository = productService;
+            _productService = productService;
         }
         
         public Cart FindCartByUserId(Guid userId)
@@ -41,7 +41,7 @@ namespace CerteecStore.Application.Carts
         //Coalesc operator ??
         public bool AddProductToCart(Guid userId, int idProductToAdd, int quantity)
         {
-            Product productToAdd = _productRepository.FindProductById(idProductToAdd);
+            Product productToAdd = _productService.FindProductById(idProductToAdd);
             if (productToAdd == null)
             {
                 return false;
@@ -71,7 +71,7 @@ namespace CerteecStore.Application.Carts
 
         public int RemoveOneProductFromTheCart(Guid userId, int idProductToRemove)
         {
-            Product productToRemove = _productRepository.FindProductById(idProductToRemove);
+            Product productToRemove = _productService.FindProductById(idProductToRemove);
             Cart userCart = FindCartByUserId(userId);
             try
             {
@@ -95,7 +95,6 @@ namespace CerteecStore.Application.Carts
             }
         }
 
-        //FailFast - check 
         public List<ProductInCartDTO> ShowAllProductsInCart(Guid userId)
         {
             Cart userCart = FindCartByUserId(userId);
