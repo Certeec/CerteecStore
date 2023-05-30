@@ -23,9 +23,11 @@ namespace CerteecStore.Application.Carts
         {
            Cart userCart = _cartRepository.GetCartByUserId(userId);
 
-           return userCart;
+           return userCart; // możesz od razu napisać return _cartRepository.GetCartByUserId(userId);
         }
 
+        // metoda może być prywatna, nie używasz jej nigdzie po za CartService
+        // Druga sprawa czy ona jest potrzeba? Możesz we wszystkich miejscach używać wprost _cartRepository.UpdateCart(...)
         public void UpdateCart(Guid userId, Cart current)
         {
             _cartRepository.UpdateCart(userId, current);
@@ -76,7 +78,7 @@ namespace CerteecStore.Application.Carts
             try
             {
                 userCart.Products[productToRemove] -= 1;
-                if (userCart.Products[productToRemove] < 1)
+                if (userCart.Products[productToRemove] < 1) // lepiej chyba wpisać == 0, wygląda trochę czytelniej
                 {
                     userCart.Products.Remove(productToRemove);
                     UpdateCart(userId, userCart);
@@ -91,7 +93,7 @@ namespace CerteecStore.Application.Carts
             }
             catch(Exception e)
             {
-                return -1;
+                return -1; // Po co Ci ten wyjątek tutaj?
             }
         }
 

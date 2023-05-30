@@ -14,7 +14,7 @@ namespace CerteecStore.API.Controllers
             _productService = productService;
         }
 
-        [HttpGet("ShowProducts")]
+        [HttpGet("ShowProducts")] // Zgodnie z REST wystarczy GET /products
         public IActionResult ShowAllProducts()
         {
             List<Product> productList = _productService.ReadAll();
@@ -22,7 +22,7 @@ namespace CerteecStore.API.Controllers
             return Ok(productList);
         }
 
-        [HttpPost("AddProduct")]
+        [HttpPost("AddProduct")] // POST /products
         public IActionResult AddProduct([FromBody] Product product)
         {
             _productService.AddProduct(product);
@@ -30,7 +30,7 @@ namespace CerteecStore.API.Controllers
             return Ok(product);
         }
 
-        [HttpDelete("DeleteProduct{productId}")]
+        [HttpDelete("DeleteProduct{productId}")] // DELETE /products
         public IActionResult RemoveProduct(int productId)
         {
             var result = _productService.RemoveProductById(productId);
@@ -38,7 +38,7 @@ namespace CerteecStore.API.Controllers
             return result > 0 ? Ok(result) : NotFound();
         }
 
-        [HttpGet("FindProductById{productId}")]
+        [HttpGet("FindProductById{productId}")] // GET /prodcuts/{productId}
         public IActionResult FindProductById(int productId)
         {
             var returnedProduct = _productService.FindProductById(productId);

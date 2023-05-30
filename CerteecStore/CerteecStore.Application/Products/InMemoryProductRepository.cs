@@ -9,7 +9,7 @@ namespace CerteecStore.Application.Products
 {
     public class InMemoryProductRepository : IProductRepository
     {
-        InMemoryDatabase _memoryDatabase;
+        InMemoryDatabase _memoryDatabase; // private readonly
         
         public InMemoryProductRepository(InMemoryDatabase database)
         {
@@ -27,6 +27,8 @@ namespace CerteecStore.Application.Products
             return result; 
             //Miales cos tutaj podrzucic.. zrobilem zeby dzialalo
             // ale jestem ciekaw co mialse na mysli
+
+            /// nie pamiętam już, ale wygląda ok
         }
 
         public Product FindProductById(int productId)

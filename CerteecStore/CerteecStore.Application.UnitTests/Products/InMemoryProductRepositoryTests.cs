@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace CerteecStore.Application.UnitTests.Products
 {
+    /// TE TESTY WYDAJĄ SIĘ CHYBA JESZCZE NIE SKOŃCZONE
     internal class InMemoryProductRepositoryTests
     {
         InMemoryProductRepository _productRepositoryUT;

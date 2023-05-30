@@ -24,7 +24,7 @@ builder.Services.AddTransient<IProductService, ProductService>();
 
 
 var app = builder.Build();
-//app.Services.GetService<InMemoryDatabase>().ReadProductsFromFile();
+//app.Services.GetService<InMemoryDatabase>().ReadProductsFromFile(); /// Zakomentowany kod - do usuniêcia
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

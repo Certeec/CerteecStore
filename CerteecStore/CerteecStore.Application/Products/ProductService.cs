@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace CerteecStore.Application.Products
 {
+    // Według mnie ta klasa jest niepotrzebna póki co. Zauważ, że ona nic nie robi tylko deleguje wywołania do IProductRepository
+    // Już lepiej użyć IProductRepository bezpośrednio w kontrolerze
     public class ProductService : IProductService
     {
         IProductRepository _productRepository;

@@ -13,17 +13,23 @@ namespace CerteecStore.Application.UnitTests.Carts
 {
     internal class CartServiceTests
     {
+        // po co Ci te wszystkie pola skoro z nich nie korzystasz?
         ICartRepository _cartRepository;
         IProductService _productService;
         IProductRepository _productRepository;
         InMemoryDatabase _database;
         ICartService _cartService;
         Product _productForTests;
+        //private Mock<ICartRepository> _cartRepositoryMock;
 
+        //private CartService _sut;
 
         [SetUp]
         public void SetUp()
         {
+            // te pola wyżej jak najbardziej są ok, ale zamieniłbym je na mocki:
+            //_cartRepositoryMock = new Mock<ICartRepository>();
+            // A w testach byś mógł robić same setupy, nie musiałbyś co test pisać tych samych deklaracji
             _database = new InMemoryDatabase();
             _cartRepository = new InMemoryCartRepository(_database);
             _productRepository = new InMemoryProductRepository(_database);
@@ -37,6 +43,9 @@ namespace CerteecStore.Application.UnitTests.Carts
                 Name = "testId2",
                 Quantity = 2
             };
+
+            // tak samo mógłbyś sobie zadeklarować CartService jako pole - jak wyżej i potem napisać:
+            // _sut = new CartService(<i tu wszystkie mocki utworzone wyżej>);
         }
 
         [Test]
@@ -60,7 +69,7 @@ namespace CerteecStore.Application.UnitTests.Carts
             cartRepostioryMocked.Setup(n => n.GetCartByUserId(userId)).Returns(cartUT);
 
             //Act
-            var result = serviceUT.CountCartValue(userId);
+            var result = serviceUT.CountCartValue(userId); // dzięki temu tu byś tylko pisał _sut.CountCartValue(userId);
 
             //Assert
             result.Should().Be(15);
