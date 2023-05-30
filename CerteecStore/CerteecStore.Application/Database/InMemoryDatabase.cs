@@ -20,7 +20,7 @@ namespace CerteecStore.Application.Database
 
         public  void ReadProductsFromFile()
         {
-            string url = "C:\\Users\\AiutJeKokot\\Desktop\\Repozytorium\\certProj\\CerteecStore\\test.txt";
+            string url = "C:\\Users\\AiutJeKokot\\Desktop\\Repozytorium\\certProj\\CerteecStore\\test.txt"; // co z tą ścieżką? Wygląda, że dalej jest absolutna
             try
             {
                 using (StreamReader sr = new StreamReader(url))
