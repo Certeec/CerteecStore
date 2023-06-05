@@ -11,12 +11,12 @@ namespace CerteecStore.Application.Carts
     public class CartService : ICartService
     {
         private readonly ICartRepository _cartRepository; 
-        private readonly IProductService _productService;
+        private readonly IProductRepository _productRepository;
 
-        public CartService(ICartRepository cartRepository, IProductService productService)
+        public CartService(ICartRepository cartRepository, IProductRepository productService)
         {
             _cartRepository = cartRepository;
-            _productService = productService;
+            _productRepository = productService;
         }
         
         public Cart FindCartByUserId(Guid userId)
@@ -28,12 +28,12 @@ namespace CerteecStore.Application.Carts
 
         // metoda może być prywatna, nie używasz jej nigdzie po za CartService
         // Druga sprawa czy ona jest potrzeba? Możesz we wszystkich miejscach używać wprost _cartRepository.UpdateCart(...)
-        public void UpdateCart(Guid userId, Cart current)
+        private void UpdateCart(Guid userId, Cart current)
         {
             _cartRepository.UpdateCart(userId, current);
         }
 
-        public double CountCartValue(Guid userId)
+        public decimal CountCartValue(Guid userId)
         {
             Cart userCart = FindCartByUserId(userId);
 
@@ -43,7 +43,7 @@ namespace CerteecStore.Application.Carts
         //Coalesc operator ??
         public bool AddProductToCart(Guid userId, int idProductToAdd, int quantity)
         {
-            Product productToAdd = _productService.FindProductById(idProductToAdd);
+            Product productToAdd = _productRepository.FindProductById(idProductToAdd);
             if (productToAdd == null)
             {
                 return false;
@@ -73,12 +73,16 @@ namespace CerteecStore.Application.Carts
 
         public int RemoveOneProductFromTheCart(Guid userId, int idProductToRemove)
         {
-            Product productToRemove = _productService.FindProductById(idProductToRemove);
+            //Problems to solve -> if product is Null not gonna work... Also to Refactory.
+
+            Product productToRemove = _productRepository.FindProductById(idProductToRemove);
             Cart userCart = FindCartByUserId(userId);
-            try
+
+            if (userCart.Products.ContainsKey(productToRemove)) 
             {
                 userCart.Products[productToRemove] -= 1;
                 if (userCart.Products[productToRemove] < 1) // lepiej chyba wpisać == 0, wygląda trochę czytelniej
+                 ///Jak dasz ==0, to gdy bedziesz potem usuwac  - quantity i ci wyjdzie -5, to nie zadziala, a tak sie zabezpieczamy.
                 {
                     userCart.Products.Remove(productToRemove);
                     UpdateCart(userId, userCart);
@@ -91,10 +95,8 @@ namespace CerteecStore.Application.Carts
                 }
 
             }
-            catch(Exception e)
-            {
-                return -1; // Po co Ci ten wyjątek tutaj?
-            }
+            return -1;
+
         }
 
         public List<ProductInCartDTO> ShowAllProductsInCart(Guid userId)
@@ -111,7 +113,14 @@ namespace CerteecStore.Application.Carts
                 ProductId = n.Key.ProductId,
                 Quantity = n.Value,
                 UnitPrice = n.Key.ItemPrice
-            }).ToList<ProductInCartDTO>();
+            }).ToList();
+        }
+
+        public void ShowProductsInCart(int userId) // return ListOfProductInCartDTO
+        {
+            CartRepository repostioryTest = new CartRepository();
+            var Cart = repostioryTest.ShowAllProductsInCart(userId);
+            int[] products = Cart.Select(n => n.ProductId).ToArray();
         }
     }
 }

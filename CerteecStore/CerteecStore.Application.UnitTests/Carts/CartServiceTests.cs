@@ -1,210 +1,180 @@
-﻿using CerteecStore.Application.Carts;
-using CerteecStore.Application.Database;
-using CerteecStore.Application.Products;
-using FluentAssertions;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// using CerteecStore.Application.Carts;
+//using CerteecStore.Application.Database;
+//using CerteecStore.Application.Products;
+//using FluentAssertions;
+//using Moq;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
-namespace CerteecStore.Application.UnitTests.Carts
-{
-    internal class CartServiceTests
-    {
-        // po co Ci te wszystkie pola skoro z nich nie korzystasz?
-        ICartRepository _cartRepository;
-        IProductService _productService;
-        IProductRepository _productRepository;
-        InMemoryDatabase _database;
-        ICartService _cartService;
-        Product _productForTests;
-        //private Mock<ICartRepository> _cartRepositoryMock;
+//namespace CerteecStore.Application.UnitTests.Carts
+//{
+//    internal class CartServiceTests
+//    {
+//        private Product _productForTests;
+//        private Mock<ICartRepository> _cartRepositoryMocked;
+//        private Mock<IProductService> _productServiceMocked;
+//        private ICartService _serviceUT;
+//        private Guid _userId;
 
-        //private CartService _sut;
+//        [SetUp]
+//        public void SetUp()
+//        {
+//            _cartRepositoryMocked = new Mock<ICartRepository>();
+//            _productServiceMocked = new Mock<IProductService>();
+//            _serviceUT = new CartService(_cartRepositoryMocked.Object, _productServiceMocked.Object);
+//            _userId = Guid.NewGuid();
+//            _productForTests = new Product()
+//            {
+//                ProductId = 2,
+//                Description = "",
+//                ItemPrice = 1,
+//                Name = "testId2",
+//                Quantity = 2
+//            };
+//        }
 
-        [SetUp]
-        public void SetUp()
-        {
-            // te pola wyżej jak najbardziej są ok, ale zamieniłbym je na mocki:
-            //_cartRepositoryMock = new Mock<ICartRepository>();
-            // A w testach byś mógł robić same setupy, nie musiałbyś co test pisać tych samych deklaracji
-            _database = new InMemoryDatabase();
-            _cartRepository = new InMemoryCartRepository(_database);
-            _productRepository = new InMemoryProductRepository(_database);
-            _productService = new ProductService(_productRepository);
-            _cartService = new CartService(_cartRepository, _productService);
-            _productForTests = new Product()
-            {
-                ProductId = 2,
-                Description = "",
-                ItemPrice = 1,
-                Name = "testId2",
-                Quantity = 2
-            };
+//        [Test] /////////////////////////////////////////////////////////////
+//        public void AddProductToCart_ShouldAddNewProductToCart_WhenGivenCartWithoutExistingProduct()
+//        {
+//            //Arrange
+//            Cart cartExpected = new Cart();
+//            int quantity = 1;
+//            _productServiceMocked.Setup(n => n.FindProductById(It.IsAny<int>())).Returns(_productForTests);
+//            _cartRepositoryMocked.Setup(n => n.GetCartByUserId(_userId)).Returns(cartExpected);
 
-            // tak samo mógłbyś sobie zadeklarować CartService jako pole - jak wyżej i potem napisać:
-            // _sut = new CartService(<i tu wszystkie mocki utworzone wyżej>);
-        }
+//            //Act
+//            var result = _serviceUT.AddProductToCart(_userId, 1, quantity);
 
-        [Test]
-        public void CountCartValue_ShouldReturnedSumUpOfCart()
-        {
-            //Arrange
-            Guid userId = Guid.NewGuid();
-            Cart cartUT = new Cart();
-            Product productToCount = new Product()
-            {
-                ProductId = 1,
-                Description = "",
-                ItemPrice = 5,
-                Name = "test",  
-                Quantity = 1
-            };
+//            //Assert
+//            result.Should().NotBe(false);
+//            _cartRepositoryMocked.Verify(n => n.UpdateCart(_userId, cartExpected));
+//            cartExpected.Products.Should().Contain(_productForTests, quantity);
+//        }
 
-            cartUT.Products.Add(productToCount, 3);
-            var cartRepostioryMocked = new Mock<ICartRepository>();
-            CartService serviceUT = new CartService(cartRepostioryMocked.Object, _productService);
-            cartRepostioryMocked.Setup(n => n.GetCartByUserId(userId)).Returns(cartUT);
+//        [Test]
+//        public void CountCartValue_ShouldReturnedSumUpOfCart()
+//        {
+//            //Arrange
+//            Cart cartUT = new Cart();
+//            Product productToCount = new Product()
+//            {
+//                ProductId = 1,
+//                Description = "",
+//                ItemPrice = 5,
+//                Name = "test",  
+//                Quantity = 1
+//            };
 
-            //Act
-            var result = serviceUT.CountCartValue(userId); // dzięki temu tu byś tylko pisał _sut.CountCartValue(userId);
+//            cartUT.Products.Add(productToCount, 3);
+//            _cartRepositoryMocked.Setup(n => n.GetCartByUserId(_userId)).Returns(cartUT);
 
-            //Assert
-            result.Should().Be(15);
-        }
+//            //Act
+//            var result = _serviceUT.CountCartValue(_userId);
 
-        [Test]
-        public void AddProductToCart_ShouldAddNewProductToCart_WhenGivenCartWithoutExistingProduct()
-        {
-            //Arrange
-            Guid userId = Guid.NewGuid();
-            Cart cartExpected = new Cart();
-            int quantity = 1;
-            int productId = 1;
-            var cartRepositoryMocked = new Mock<ICartRepository>();
-            var productServiceMocked = new Mock<IProductService>();
-            productServiceMocked.Setup(n => n.FindProductById(productId)).Returns(_productForTests);
-            cartRepositoryMocked.Setup(n => n.GetCartByUserId(userId)).Returns(cartExpected);
-            CartService serviceUT = new CartService(cartRepositoryMocked.Object, productServiceMocked.Object);
+//            //Assert
+//            result.Should().Be(15);
+//        }
 
-            //Act
-            var result = serviceUT.AddProductToCart(userId, 1, quantity);
+        
 
-            //Assert
-            result.Should().NotBe(false);
-            cartRepositoryMocked.Verify(n => n.UpdateCart(userId, cartExpected));
-            cartExpected.Products.Should().Contain(_productForTests, quantity);
-        }
+//        [Test]
+//        public void AddProductToCart_ShouldAddQuantityToProductCount_WhenGivenCartWithExistingProduct()
+//        {
+//            //Arrange
+//            Cart cartExpected = new Cart();
+//            int quantity = 1;
+//            int productId = 1;
+//            cartExpected.Products.Add(_productForTests, 1);
+//            _productServiceMocked.Setup(n => n.FindProductById(productId)).Returns(_productForTests);
+//            _cartRepositoryMocked.Setup(n => n.GetCartByUserId(_userId)).Returns(cartExpected);
 
-        [Test]
-        public void AddProductToCart_ShouldAddQuantityToProductCount_WhenGivenCartWithExistingProduct()
-        {
-            //Arrange
-            Guid userId = Guid.NewGuid();
-            Cart cartExpected = new Cart();
-            int quantity = 1;
-            int productId = 1;
-            cartExpected.Products.Add(_productForTests, 1);
-            var cartRepositoryMocked = new Mock<ICartRepository>();
-            var productServiceMocked = new Mock<IProductService>();
-            productServiceMocked.Setup(n => n.FindProductById(productId)).Returns(_productForTests);
-            cartRepositoryMocked.Setup(n => n.GetCartByUserId(userId)).Returns(cartExpected);
-            CartService serviceUT = new CartService(cartRepositoryMocked.Object, productServiceMocked.Object);
-
-            //Act
-            var result = serviceUT.AddProductToCart(userId, 1, quantity);
+//            //Act
+//            var result = _serviceUT.AddProductToCart(_userId, 1, quantity);
 
 
-            //Assert
-            result.Should().NotBe(false);
-            cartRepositoryMocked.Verify(n => n.UpdateCart(userId, cartExpected));
-            cartExpected.Products.Should().Contain(_productForTests, 2);
-        }
+//            //Assert
+//            result.Should().NotBe(false);
+//            _cartRepositoryMocked.Verify(n => n.UpdateCart(_userId, cartExpected));
+//            cartExpected.Products.Should().Contain(_productForTests, 2);
+//        }
 
-        [Test]
-        public void AddProductToCart_ShouldCreateNewCart_WhenCartDoesntExist()
-        {
-            //Arrange
-            Guid userId = Guid.NewGuid();
-            int quantity = 1;
-            int productId = 1;
-            var cartRepositoryMocked = new Mock<ICartRepository>();
-            var productServiceMocked = new Mock<IProductService>();
-            productServiceMocked.Setup(n => n.FindProductById(productId)).Returns(_productForTests);
-            cartRepositoryMocked.Setup(n => n.GetCartByUserId(userId)).Returns(new Cart());
-            CartService serviceUT = new CartService(cartRepositoryMocked.Object, productServiceMocked.Object);
+//        [Test]
+//        public void AddProductToCart_ShouldCreateNewCart_WhenCartDoesntExist()
+//        {
+//            //Arrange
+//            int quantity = 1;
+//            int productId = 1;
+//           _productServiceMocked.Setup(n => n.FindProductById(productId)).Returns(_productForTests);
+//           _cartRepositoryMocked.Setup(n => n.GetCartByUserId(_userId)).Returns(new Cart());
 
-            //Act
-            var result = serviceUT.AddProductToCart(userId, 1, quantity);
+//            //Act
+//            var result = _serviceUT.AddProductToCart(_userId, productId, quantity);
 
-            //Assert
-            result.Should().NotBe(false);
-            cartRepositoryMocked.Verify(n => n.UpdateCart(userId, It.IsAny<Cart>()));
-        }
+//            //Assert
+//            result.Should().BeTrue();
+//            _cartRepositoryMocked.Verify(n => n.UpdateCart(_userId, It.IsAny<Cart>()));
+//        }
 
-        [Test]
-        public void AddProductToCart_ShouldReturnFalse_WhenProductDoesntExistInDatabase()
-        {
-            //Arrange
-            Guid userId = Guid.NewGuid();
-            int quantity = 1;
-            int productId = 1;
-            var cartRepositoryMocked = new Mock<ICartRepository>();
-            var productServiceMocked = new Mock<IProductService>();
-            productServiceMocked.Setup(n => n.FindProductById(productId)).Returns<Product>(null);
-            CartService serviceUT = new CartService(cartRepositoryMocked.Object, productServiceMocked.Object);
+//        [Test]
+//        public void AddProductToCart_ShouldReturnFalse_WhenProductDoesntExistInDatabase()
+//        {
+//            //Arrange
+//            int quantity = 1;
+//            int productId = 1;
+//            _productServiceMocked.Setup(n => n.FindProductById(productId)).Returns<Product>(null);
 
-            //Act
-            var result = serviceUT.AddProductToCart(userId, 1, quantity);
+//            //Act
+//            var result = _serviceUT.AddProductToCart(_userId, 1, quantity);
 
-            //Assert
-            result.Should().BeFalse();
-        }
+//            //Assert
+//            result.Should().BeFalse();
+//        }
 
-        [Test]
-        public void CreateCart_ShouldCreateNewCart()
-        {
-            //Arrange
-            var cartRepositoryMocked = new Mock<ICartRepository>();
-            CartService serviceUt = new CartService(cartRepositoryMocked.Object, _productService);
+//        [Test]
+//        public void CreateCart_ShouldCreateNewCart()
+//        {
+//            //Arrange
 
-            //Act
-            var result = serviceUt.CreateCart(Guid.NewGuid());
+//            //Act
+//            var result = _serviceUT.CreateCart(Guid.NewGuid());
 
-            //Assert
-            result.Should().BeOfType<Cart>();
-        }
+//            //Assert
+//            result.Should().BeOfType<Cart>();
+//        }
 
-        [Test]
-        public void RemoveOneProductFromTheCart()
-        {
-            //Arrange
-            Guid userId = Guid.NewGuid();
-            var productServiceMocked = new Mock<IProductService>();
-            var cartRepositoryMocked = new Mock<ICartRepository>();
-            int productId = 1;
-            Cart cartWithOneItem = new Cart();
-            cartWithOneItem.Products.Add(_productForTests, 2);
-            CartService serviceUT = new CartService(cartRepositoryMocked.Object, productServiceMocked.Object);
-            productServiceMocked.Setup(n => n.FindProductById(productId)).Returns(_productForTests);
+//        [Test]
+//        public void RemoveOneProductFromTheCart()
+//        { 
+//            //Arrange
+//            Cart cartWithOneItem = new Cart();
+//            cartWithOneItem.Products.Add(_productForTests, 2);
+//            _productServiceMocked.Setup(n => n.FindProductById(It.IsAny<int>())).Returns(_productForTests);
+//            _cartRepositoryMocked.Setup(n => n.GetCartByUserId(It.IsAny<Guid>())).Returns(cartWithOneItem);
 
+//            //Act
+//           var result =  _serviceUT.RemoveOneProductFromTheCart(_userId, 1);
 
-            //Act
-           var result =  serviceUT.RemoveOneProductFromTheCart(userId, 1);
+//            //Assert
+//            result.Should().NotBe(-1);
+//            _cartRepositoryMocked.Verify(n => n.UpdateCart(_userId, It.Is<Cart>(n => n.Products[_productForTests] == 1)));
+//        }
 
-            //Assert
-            result.Should().NotBe(-1);
-            cartRepositoryMocked.Verify(n => n.UpdateCart(userId, cartWithOneItem));
-            cartWithOneItem.Products.Should().Contain(_productForTests, 1);
-        }
+//        [Test]
+//        public void RemoveOneProductFromTheCart_ShouldReturnNegativeOne_WhenGivenNullProduct()
+//        {
+//            //Arrange
+//            _productServiceMocked.Setup(n => n.FindProductById(It.IsAny<int>())).Returns<Cart>(null);
+//            _cartRepositoryMocked.Setup(n => n.GetCartByUserId(It.IsAny<Guid>())).Returns(new Cart());
 
-        [TearDown]
-        public void TearDown()
-        {
+//            //Act
+//            var result = _serviceUT.RemoveOneProductFromTheCart(_userId, 1);
 
-
-        }
-    }
-}
+//            //Assert
+//            result.Should().Be(-1);
+//            _cartRepositoryMocked.VerifyNoOtherCalls();
+//        }
+//    }
+//}

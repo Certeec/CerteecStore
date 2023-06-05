@@ -16,10 +16,10 @@ builder.Services.AddSingleton<InMemoryDatabase>(n =>
     database.ReadProductsFromFile();
     return database;
 });
-builder.Services.AddTransient<IProductRepository, InMemoryProductRepository>();
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<ICartRepository, InMemoryCartRepository>();
 builder.Services.AddTransient<ICartService, CartService>();
-builder.Services.AddTransient<IProductService, ProductService>();
+
 
 
 

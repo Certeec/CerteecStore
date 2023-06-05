@@ -8,13 +8,13 @@ namespace CerteecStore.Application.Products
 {
     public interface IProductRepository
     {
-        List<Product> ReadAll();
+        List<Product> ReadAllProducts();
 
         int RemoveProductById(int id);
 
         Product FindProductById(int productId);
 
-        bool AddProduct(Product productToAdd);
+        int AddProduct(Product productToAdd);
 
     }
 }

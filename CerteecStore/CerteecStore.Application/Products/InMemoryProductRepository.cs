@@ -7,16 +7,16 @@ using CerteecStore.Application.Database;
 
 namespace CerteecStore.Application.Products
 {
-    public class InMemoryProductRepository : IProductRepository
+    public class InMemoryProductRepository
     {
-        InMemoryDatabase _memoryDatabase; // private readonly
+        private readonly InMemoryDatabase _memoryDatabase;
         
         public InMemoryProductRepository(InMemoryDatabase database)
         {
             _memoryDatabase = database;
         }
 
-        public List<Product> ReadAll()
+        public List<Product> ReadAllProducts()
         {
             return _memoryDatabase.Prodcuts; 
         }
@@ -25,10 +25,6 @@ namespace CerteecStore.Application.Products
         {
             var result = _memoryDatabase.Prodcuts.RemoveAll(n => n.ProductId == id);
             return result; 
-            //Miales cos tutaj podrzucic.. zrobilem zeby dzialalo
-            // ale jestem ciekaw co mialse na mysli
-
-            /// nie pamiętam już, ale wygląda ok
         }
 
         public Product FindProductById(int productId)

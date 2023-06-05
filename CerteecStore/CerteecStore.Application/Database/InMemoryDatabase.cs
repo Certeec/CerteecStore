@@ -15,6 +15,9 @@ namespace CerteecStore.Application.Database
 
         public  Dictionary<Guid, Cart> Carts = new Dictionary<Guid, Cart>();
 
+        ///List -->  Klase --> ProductId --> Quantity 
+        ///
+
 
         ///Rozwazam przeobienia Carts na Guid, Int(id Produktu)
 
@@ -51,7 +54,7 @@ namespace CerteecStore.Application.Database
                 ProductId = int.Parse(parts[0]),
                 Name = parts[1],
                 Description = parts[2],
-                ItemPrice = double.Parse(parts[3]),
+                ItemPrice = decimal.Parse(parts[3]),
                 Quantity = int.Parse(parts[4])
             };
 

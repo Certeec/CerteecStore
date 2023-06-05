@@ -10,8 +10,8 @@ namespace CerteecStore.Application.Carts
 {
     public class InMemoryCartRepository :  ICartRepository
     {
-        InMemoryDatabase _memoryDatbase; // private readonly
-        // pusta linia pomiędzy właściwością i konstruktorem
+        private readonly InMemoryDatabase _memoryDatbase;
+
         public InMemoryCartRepository(InMemoryDatabase memoryDatbase)
         {
             _memoryDatbase = memoryDatbase;
