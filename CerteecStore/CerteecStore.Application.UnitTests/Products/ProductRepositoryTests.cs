@@ -52,7 +52,7 @@ namespace CerteecStore.Application.UnitTests.Products
         {
             CartRepository repositoryUT = new CartRepository();
             repositoryUT.ShowAllProductsInCart(1);
-            _serviceUT.ShowProductsInCart(1);
+            _serviceUT.ShowAllProductsInCart(1);
      
             
         }

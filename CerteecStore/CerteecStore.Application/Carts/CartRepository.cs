@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CerteecStore.Application.Carts
 {
-    public class CartRepository
+    public class CartRepository : ICartRepository
     {
         private readonly string _connectionString;
 
@@ -20,7 +20,7 @@ namespace CerteecStore.Application.Carts
 
         
 
-        public void AddItemToCart(int userId, int productId, int quantity)
+        public int AddItemToCart(int userId, int productId, int quantity)
         {
             
 
@@ -29,21 +29,31 @@ namespace CerteecStore.Application.Carts
                 sqlCon.Open();
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = @"
+               /* cmd.CommandText = @"
                 INSERT INTO [UserCarts]
                 ([UserId],
                 [ProductId],
                 [Quantity])
                 VALUES (@UserId,
                 @ProductId,
-                @Quantity)";
+                @Quantity)";*/
                 cmd.Connection = sqlCon;
+                cmd.CommandText = @"IF EXISTS (SELECT* FROM [Shop].[dbo].[UserCarts] WHERE UserId = @UserId AND ProductId = @ProductId)
 
-                cmd.Parameters.AddWithValue("UserId", userId);
-                cmd.Parameters.AddWithValue("productId", productId);
-                cmd.Parameters.AddWithValue("Quantity", quantity);
+  BEGIN  UPDATE [Shop].[DBO].[UserCarts] SET Quantity = Quantity + @Quantity
+  WHERE UserId = @UserId AND ProductId = @ProductId
+  END
+  ELSE
+  BEGIN
+  INSERT INTO [SHOP].[DBO].[UserCarts](UserId, ProductId, Quantity)
+  VALUES (@UserId,@ProductId,@Quantity)
+  END";
 
-                cmd.ExecuteNonQuery();
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@ProductId", productId);
+                cmd.Parameters.AddWithValue("@Quantity", quantity);
+
+                return cmd.ExecuteNonQuery();
 
             }
 
@@ -79,6 +89,21 @@ namespace CerteecStore.Application.Carts
                 }
 
                 return cart;
+            }
+        }
+        
+        public int RemoveProductFromCart(int userId, int productId)
+        {
+            using(SqlConnection sqlCon = new SqlConnection(_connectionString))
+            {
+                sqlCon.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "DELETE FROM UserCarts WHERE UserId = @UserId AND ProductId = @ProductId";
+                cmd.Connection = sqlCon;
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@ProductId", productId);
+                return cmd.ExecuteNonQuery();
             }
         }
     }

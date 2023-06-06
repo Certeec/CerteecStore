@@ -20,7 +20,7 @@ namespace CerteecStore.Application.Products
         }
            
 
-        public Product FindProductById(int productId)
+        public Product? FindProductById(int productId)
         {
             using (SqlConnection sqlCon = new SqlConnection(_connectionString))
             {
@@ -143,18 +143,28 @@ namespace CerteecStore.Application.Products
 
         }
 
-        public List<Product> ReadProductsByArray(int[] productIds)
+        public List<Product> ReadProductsByArray(int[] productsIds)
         {
+            Dictionary<string, int> parameters = new Dictionary<string, int>();
+            
+            for(int i =0; i < productsIds.Length; i++)
+            {
+                parameters.Add($"@ProductId{i}", productsIds[i]);
+            }
+
              List<Product> products = new List<Product>();
-            string any = "1,2,3";
              using(SqlConnection sqlCon = new SqlConnection(_connectionString))
             {
                 sqlCon.Open();
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "SELECT * FROM Products WHERE ProductId IN (ProductId)";
+                cmd.CommandText = $"SELECT * FROM Products WHERE ProductId IN ({string.Join(",", parameters.Keys)})";
                 cmd.Connection = sqlCon;
-                cmd.Parameters.AddWithValue("ProductId", any);
+                foreach(var param in parameters)
+                {
+                    cmd.Parameters.AddWithValue(param.Key, param.Value);
+                }
+              
                 SqlDataReader dr = cmd.ExecuteReader();
                 if (dr.HasRows)
                 {

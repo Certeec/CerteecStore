@@ -12,9 +12,10 @@ namespace CerteecStore.Application.Products
 
         int RemoveProductById(int id);
 
-        Product FindProductById(int productId);
+        Product? FindProductById(int productId);
 
         int AddProduct(Product productToAdd);
 
+        List<Product> ReadProductsByArray(int[] productsIds);
     }
 }

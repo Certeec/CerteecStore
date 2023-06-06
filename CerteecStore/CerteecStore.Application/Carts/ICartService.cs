@@ -8,11 +8,9 @@ namespace CerteecStore.Application.Carts
 {
     public interface ICartService
     {
-        Cart FindCartByUserId(Guid userId);
-        decimal CountCartValue(Guid userId);
-        bool AddProductToCart(Guid userId, int idProductToAdd, int quantity);
-        Cart CreateCart(Guid userId);
-        int RemoveOneProductFromTheCart(Guid userId, int idProductToRemove);
-        List<ProductInCartDTO> ShowAllProductsInCart(Guid userId);
+        decimal CountCartValue(int userId);
+        int AddProductToCart(int userId, int idProductToAdd, int quantity);
+        int RemoveOneProductFromTheCart(int userId, int idProductToRemove);
+        List<ProductInCartDTO> ShowAllProductsInCart(int userId);
     }
 }

@@ -17,7 +17,7 @@ builder.Services.AddSingleton<InMemoryDatabase>(n =>
     return database;
 });
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
-builder.Services.AddTransient<ICartRepository, InMemoryCartRepository>();
+builder.Services.AddTransient<ICartRepository, CartRepository>();
 builder.Services.AddTransient<ICartService, CartService>();
 
 

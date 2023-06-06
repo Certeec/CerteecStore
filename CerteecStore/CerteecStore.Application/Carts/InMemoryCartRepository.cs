@@ -8,7 +8,7 @@ using CerteecStore.Application.Database;
 
 namespace CerteecStore.Application.Carts
 {
-    public class InMemoryCartRepository :  ICartRepository
+    public class InMemoryCartRepository
     {
         private readonly InMemoryDatabase _memoryDatbase;
 
