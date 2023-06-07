@@ -1,4 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using CerteecStore.Application.Products;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Protocols;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,46 +16,70 @@ namespace CerteecStore.Application.Carts
     {
         private readonly string _connectionString;
 
-        public CartRepository()
+        public CartRepository(IConfiguration configuration)
         {
-            _connectionString = @"Data Source=(local)\SQlEXPRESS; Initial Catalog=Shop; Integrated Security = True; Trusted_Connection=True;TrustServerCertificate=True;";
+            _connectionString = configuration["ConnectionString"];
         }
 
-        
-
-        public int AddItemToCart(int userId, int productId, int quantity)
+        public ProductsInCart GetProductQuantity(int userId, int productId)
         {
-            
-
             using (SqlConnection sqlCon = new SqlConnection(_connectionString))
             {
                 sqlCon.Open();
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.Text;
-               /* cmd.CommandText = @"
-                INSERT INTO [UserCarts]
-                ([UserId],
-                [ProductId],
-                [Quantity])
-                VALUES (@UserId,
-                @ProductId,
-                @Quantity)";*/
                 cmd.Connection = sqlCon;
-                cmd.CommandText = @"IF EXISTS (SELECT* FROM [Shop].[dbo].[UserCarts] WHERE UserId = @UserId AND ProductId = @ProductId)
+                cmd.CommandText = @"Select ProductId, Quantity FROM UserCarts Where UserId = @UserId And ProductId = @ProductId";
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@ProductId", productId);
+                SqlDataReader dr = cmd.ExecuteReader();
+                if(dr.HasRows)
+                {
+                    while(dr.Read())
+                    {
+                        ProductsInCart productToReturn = new ProductsInCart()
+                        {
+                            ProductId = dr.GetInt32("ProductId"),
+                            Quantity = dr.GetInt32("Quantity")
+                        };
+                        return productToReturn;
 
-  BEGIN  UPDATE [Shop].[DBO].[UserCarts] SET Quantity = Quantity + @Quantity
-  WHERE UserId = @UserId AND ProductId = @ProductId
-  END
-  ELSE
-  BEGIN
-  INSERT INTO [SHOP].[DBO].[UserCarts](UserId, ProductId, Quantity)
-  VALUES (@UserId,@ProductId,@Quantity)
-  END";
+                    }
+                }
+                return null;
 
+            }
+        }
+
+        public int InsertIntoCart(int userId, int productId, int quantity)
+        {
+            using(SqlConnection sqlCon = new SqlConnection(_connectionString))
+            {
+                sqlCon.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = sqlCon;
+                cmd.CommandText = @"INSERT INTO UserCarts (UserId, ProductId, Quantity) VALUES (@UserId, @ProductId, @Quantity)";
                 cmd.Parameters.AddWithValue("@UserId", userId);
                 cmd.Parameters.AddWithValue("@ProductId", productId);
                 cmd.Parameters.AddWithValue("@Quantity", quantity);
 
+                return cmd.ExecuteNonQuery();
+            }
+        }
+
+        public int UpdateQuantityInCart(int userId, int productId, int quantity)
+        {
+            using(SqlConnection sqlCon = new SqlConnection(_connectionString))
+            {
+                sqlCon.Open();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = sqlCon;
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = @"UPDATE UserCarts SET Quantity = @Quantity WHERE UserId = @UserId AND ProductId = @ProductId";
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue(@"ProductId", productId);
+                cmd.Parameters.AddWithValue("@Quantity", quantity);
                 return cmd.ExecuteNonQuery();
 
             }
@@ -67,7 +94,7 @@ namespace CerteecStore.Application.Carts
                 sqlCon.Open();
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = @"SELECT * FROM UserCarts WHERE UserId = @UserId;";
+                cmd.CommandText = @"SELECT ProductId, Quantity FROM UserCarts WHERE UserId = @UserId;";
                 cmd.Connection = sqlCon;
                 cmd.Parameters.AddWithValue("@UserId", userId);
                 SqlDataReader dr = cmd.ExecuteReader();

@@ -1,4 +1,6 @@
-﻿using CerteecStore.Application.Carts;
+﻿using Castle.Core.Configuration;
+using CerteecStore.Application.Carts;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +12,13 @@ namespace CerteecStore.Application.UnitTests.Products
     internal class CartRepositoryTests
     {
         CartRepository _cartRepositoryUT;
+         Mock<IConfiguration> configuration;
 
         [SetUp]
         public void SetUp()
         {
-            _cartRepositoryUT = new CartRepository();
+            configuration = new Mock<IConfiguration>();
+            _cartRepositoryUT = new CartRepository((Microsoft.Extensions.Configuration.IConfiguration)configuration.Object);
         }
 
         [Test]

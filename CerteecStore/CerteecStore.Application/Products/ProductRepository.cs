@@ -1,8 +1,10 @@
 ﻿using CerteecStore.Application.Carts;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -16,16 +18,16 @@ namespace CerteecStore.Application.Products
 
         public ProductRepository()
         {
-            _connectionString = @"Data Source=(local)\SQlEXPRESS; Initial Catalog=Shop; Integrated Security = True; Trusted_Connection=True;TrustServerCertificate=True;";
+
+            //_connectionString = configuration["ConnectionString"];
         }
            
-
         public Product? FindProductById(int productId)
         {
             using (SqlConnection sqlCon = new SqlConnection(_connectionString))
             {
                 sqlCon.Open();
-                string query = "SELECT * FROM Products WHERE ProductId = @ProductId;";
+                string query = "SELECT ProductId, Name, Description, ItemPrice, Quantity FROM Products WHERE ProductId = @ProductId;";
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = sqlCon;
                 cmd.CommandType = CommandType.Text;
@@ -51,42 +53,13 @@ namespace CerteecStore.Application.Products
             }
         }
 
-        //public List<Product> ReadAllProducts()
-        //{
-        //    using (SqlConnection sqlCon = new SqlConnection(_connectionString))
-        //    {
-
-        //        sqlCon.Open();
-        //        SqlDataAdapter sqlData = new SqlDataAdapter("Select * From Products", sqlCon);
-        //        DataSet ds = new DataSet();
-        //        sqlData.Fill(ds);
-        //        List<Product> productList = new List<Product>();
-
-        //        for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-        //        {
-        //            Product productToadd = new Product()
-        //            {
-        //                ProductId = int.Parse(ds.Tables[0].Rows[i].ItemArray[0].ToString()),
-        //                Name = ds.Tables[0].Rows[i].ItemArray[1].ToString(),
-        //                Description = ds.Tables[0].Rows[i].ItemArray[2].ToString(),
-        //                ItemPrice = decimal.Parse(ds.Tables[0].Rows[i].ItemArray[3].ToString()),
-        //                Quantity = int.Parse(ds.Tables[0].Rows[i].ItemArray[4].ToString())
-        //            };
-
-        //            productList.Add(productToadd);
-        //        }
-
-        //        return productList;
-        //    }
-        //}
-
         public List<Product> ReadAllProducts()
         {
             List<Product> products = new List<Product>();
             using(SqlConnection sqlCon = new SqlConnection())
             {
                 sqlCon.Open();
-                string query = "SELECT * FROM Products;";
+                string query = "SELECT ProductId, Name, Description, ItemPrice, Quantity FROM Products;";
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = query;
@@ -158,7 +131,7 @@ namespace CerteecStore.Application.Products
                 sqlCon.Open();
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = $"SELECT * FROM Products WHERE ProductId IN ({string.Join(",", parameters.Keys)})";
+                cmd.CommandText = $"SELECT ProductId, Description, Name, ItemPrice, Quantity FROM Products WHERE ProductId IN ({string.Join(",", parameters.Keys)})";
                 cmd.Connection = sqlCon;
                 foreach(var param in parameters)
                 {

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using FluentAssertions;
+using Microsoft.Extensions.Configuration;
 
 namespace CerteecStore.Application.UnitTests.Products
 {
@@ -43,16 +44,16 @@ namespace CerteecStore.Application.UnitTests.Products
             //repositoryUT.FindProductById(1);
             // repositoryUT.FindProductById(1);
             // repositoryUT.RemoveProductById(1);
-            CartRepository repoUT = new CartRepository();
-            repoUT.AddItemToCart(1, 3, 2);
+            //CartRepository repoUT = new CartRepository();
+          //  repoUT.AddItemToCart(1, 3, 2);
         }
 
         [Test]
         public void CheckingFunctiom()
         {
-            CartRepository repositoryUT = new CartRepository();
-            repositoryUT.ShowAllProductsInCart(1);
-            _serviceUT.ShowAllProductsInCart(1);
+           //CartRepository repositoryUT = new CartRepository();
+           // repositoryUT.ShowAllProductsInCart(1);
+           // _serviceUT.ShowAllProductsInCart(1);
      
             
         }

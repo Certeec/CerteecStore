@@ -8,7 +8,7 @@ using CerteecStore.Application.Database;
 
 namespace CerteecStore.Application.Carts
 {
-    public class InMemoryCartRepository
+    public class InMemoryCartRepository : ICartRepository
     {
         private readonly InMemoryDatabase _memoryDatbase;
 
@@ -33,6 +33,36 @@ namespace CerteecStore.Application.Carts
         public void CreateCart(Guid userId, Cart userCart)
         {
             _memoryDatbase.Carts.Add(userId, userCart);
+        }
+
+        public int AddItemToCart(int userId, int productId, int quantity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ProductsInCart> ShowAllProductsInCart(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int RemoveProductFromCart(int userId, int productId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProductsInCart GetProductQuantity(int userId, int productId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InsertIntoCart(int userId, int productId, int quantity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int UpdateQuantityInCart(int userId, int productId, int quantity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -57,8 +57,16 @@ namespace CerteecStore.Application.Carts
             {
                 return 0;
             }
-         
-            return _cartRepository.AddItemToCart(userId, productId, quantity);
+
+            var result = _cartRepository.GetProductQuantity(userId, productId);
+            if(result == null)
+            {
+               return _cartRepository.InsertIntoCart(userId, productId, quantity);
+            }
+            else
+            {
+                return _cartRepository.UpdateQuantityInCart(userId, productId, quantity + result.Quantity);
+            }
         }
 
 
@@ -113,7 +121,7 @@ namespace CerteecStore.Application.Carts
         //    }).ToList();
         //}
 
-        public List<ProductInCartDTO> ShowAllProductsInCart(int userId) // return ListOfProductInCartDTO
+        public List<ProductInCartDTO> ShowAllProductsInCart(int userId) 
         {
             var Cart = _cartRepository.ShowAllProductsInCart(userId);
             int[] products = Cart.Select(n => n.ProductId).ToArray();
@@ -132,6 +140,8 @@ namespace CerteecStore.Application.Carts
                 listToReturn.Add(productInDto);
             }
             return listToReturn;
+
+            //na Dictionary
         }
     }
 }

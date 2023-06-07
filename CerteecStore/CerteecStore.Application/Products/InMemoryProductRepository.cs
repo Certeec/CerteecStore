@@ -7,7 +7,7 @@ using CerteecStore.Application.Database;
 
 namespace CerteecStore.Application.Products
 {
-    public class InMemoryProductRepository
+    public class InMemoryProductRepository : IProductRepository
     {
         private readonly InMemoryDatabase _memoryDatabase;
         
@@ -36,6 +36,16 @@ namespace CerteecStore.Application.Products
         {
             _memoryDatabase.Prodcuts.Add(productToAdd);
             return true;
+        }
+
+        int IProductRepository.AddProduct(Product productToAdd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Product> ReadProductsByArray(int[] productsIds)
+        {
+            throw new NotImplementedException();
         }
     }
 }
