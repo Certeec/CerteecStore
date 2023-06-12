@@ -13,6 +13,11 @@ if (builder.Configuration["DatabaseType"] == "SQL")
     builder.Services.AddTransient<IProductRepository, ProductRepository>();
     builder.Services.AddTransient<ICartRepository, CartRepository>();
 }
+else if (builder.Configuration["DatabaseType"] == "Dapper")
+{
+    builder.Services.AddTransient<IProductRepository, DapperProductRepository>();
+    builder.Services.AddTransient<ICartRepository, DapperCartRepository>();
+}
 else
 {
     builder.Services.AddSingleton<InMemoryDatabase>(n =>

@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CerteecStore.Application.UnitTests.Products
+namespace CerteecStore.Application.UnitTests.Carts
 {
     internal class CartRepositoryTests
     {
         CartRepository _cartRepositoryUT;
-         Mock<IConfiguration> configuration;
+        Mock<IConfiguration> configuration;
 
         [SetUp]
         public void SetUp()

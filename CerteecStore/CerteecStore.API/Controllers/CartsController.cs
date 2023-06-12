@@ -1,6 +1,7 @@
 ﻿using CerteecStore.API.Requests;
 using CerteecStore.Application.Carts;
 using Microsoft.AspNetCore.Mvc;
+using CerteecStore.API.Requests;
 
 namespace CerteecStore.API.Controllers
 {
@@ -22,7 +23,22 @@ namespace CerteecStore.API.Controllers
             return Ok(value);
         }
 
-        [HttpPost("{userId}/Products")] // Według mnie lepiej by było product id i quantity podawać przez [FromBody] zamiast ze ścieżki. Poczytaj o dobrych praktykach REST
+        [HttpGet("{userId}/products")]
+        public IActionResult ShowAllProductsInCart(int userId)
+        {
+            var result = _cartService.ShowAllProductsInCart(userId);
+            List<ProductInCartDTO> productsInCart = result.Select(n => new ProductInCartDTO
+            {
+                ProductId = n.Key.ProductId,
+                Name = n.Key.Name,
+                UnitPrice = n.Key.ItemPrice,
+                Quantity = n.Value
+            }).ToList();
+
+            return Ok(productsInCart);
+        }
+
+        [HttpPost("{userId}/Products")]
         public IActionResult AddProductToCart(int userId, [FromBody] List<AddProductsToCartDTO> request)
         {
             int productsNotAdded = 0;
@@ -40,16 +56,34 @@ namespace CerteecStore.API.Controllers
         }
 
         [HttpDelete("{userId}/Products/{productId}")]
-        public IActionResult DeleteOneItemOfProductInCart(int userId, int productId)
+        public IActionResult DeleteProduct(int userId, int productId)
         {
-            int rowsDeleted = _cartService.RemoveOneProductFromTheCart(userId, productId);
+            int rowsDeleted = _cartService.RemoveProductFromTheCart(userId, productId);
             return rowsDeleted > 0 ? Ok() : NotFound(); 
         }
 
-        [HttpGet("{userId}/products")]
-        public IActionResult ShowAllProductsInCart(int userId)
+        [HttpPut("{userId}/Products/{productId}/Increment")]
+        public IActionResult IncrementProductToCart(int userId, int productId)
         {
-            return Ok(_cartService.ShowAllProductsInCart(userId));
+            _cartService.UpdateProductQuantityInCart(userId, productId, x => x + 1);
+
+            return Ok();
+        }
+
+        [HttpPut("{userId}/Products/{productId}/Decrement")]
+        public IActionResult DecrementProductFromCart(int userId, int productId)
+        {
+            _cartService.UpdateProductQuantityInCart(userId, productId, x => x - 1);
+
+            return Ok();
+        }
+
+        [HttpPut("{userId}/Products/{productId}")]
+        public IActionResult DecrementProductFromCart(int userId, int productId, [FromBody] int quantity)
+        {
+            _cartService.UpdateProductQuantityInCart(userId, productId, x => quantity);
+
+            return Ok();
         }
     }
 

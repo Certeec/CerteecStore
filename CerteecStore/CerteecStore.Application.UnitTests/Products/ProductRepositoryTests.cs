@@ -26,7 +26,8 @@ namespace CerteecStore.Application.UnitTests.Products
             _cartRepositoryMocked = new Mock<ICartRepository>();
             _productRepositoryMocked = new Mock<IProductRepository>();
             _serviceUT = new CartService(_cartRepositoryMocked.Object, _productRepositoryMocked.Object);
-            _productRepositoryUT = new ProductRepository();
+            Mock<IConfiguration> configuration = new Mock<IConfiguration>();
+            _productRepositoryUT = new ProductRepository(configuration.Object);
             _productForTests = new Product()
             {
                 ProductId = 2,
@@ -74,14 +75,21 @@ namespace CerteecStore.Application.UnitTests.Products
         public void ReadProductsByArray_ShouldReturnListOfProducts()
         {
             //Arrange
-            ProductRepository repoUT = new ProductRepository();
             int[] testArray = new int[] { 1, 3, 2, 4 };
 
             //Act
-            var result = repoUT.ReadProductsByArray(testArray);
+            var result = _productRepositoryUT.ReadProductsByArray(testArray);
 
             //Assert
             result.Should().NotBeEmpty();
+        }
+
+        [Test]
+        public void Tests()
+        {
+            
+            
+
         }
     }
 }

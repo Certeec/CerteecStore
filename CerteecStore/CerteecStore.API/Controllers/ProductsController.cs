@@ -23,6 +23,14 @@ namespace CerteecStore.API.Controllers
             return Ok(productList);
         }
 
+        [HttpGet("products/{productId}", Name = "FindProductById")]
+        public IActionResult FindProductById(int productId)
+        {
+            var returnedProduct = _productRepository.FindProductById(productId);
+
+            return returnedProduct != null ? Ok(returnedProduct) : NotFound();
+        }
+
         [HttpPost("products")]
         public IActionResult AddProduct([FromBody] CreateProductDTO product)
         {
@@ -31,7 +39,7 @@ namespace CerteecStore.API.Controllers
                 Product productToAdd = new Product()
                 {
                     Description = product.Description,
-                    //ItemPrice = product.ItemPrice, to uncomment
+                    ItemPrice = product.ItemPrice,
                     Name = product.Name,
                     Quantity = product.Quantity
                 };
@@ -54,12 +62,6 @@ namespace CerteecStore.API.Controllers
             return result > 0 ? Ok(result) : NotFound();
         }
 
-        [HttpGet("products/{productId}", Name = "FindProductById")]
-        public IActionResult FindProductById(int productId)
-        {
-            var returnedProduct = _productRepository.FindProductById(productId);
-
-            return returnedProduct != null ? Ok(returnedProduct) : NotFound();
-        }
+       
     }
 }

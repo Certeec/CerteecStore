@@ -21,7 +21,7 @@ namespace CerteecStore.Application.Carts
             _connectionString = configuration["ConnectionString"];
         }
 
-        public ProductsInCart GetProductQuantity(int userId, int productId)
+        public ProductsInCart? GetProductQuantity(int userId, int productId)
         {
             using (SqlConnection sqlCon = new SqlConnection(_connectionString))
             {

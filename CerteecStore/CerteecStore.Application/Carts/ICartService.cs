@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CerteecStore.Application.Products;
+using static CerteecStore.Application.Carts.CartService;
 
 namespace CerteecStore.Application.Carts
 {
@@ -10,7 +7,8 @@ namespace CerteecStore.Application.Carts
     {
         decimal CountCartValue(int userId);
         int AddProductToCart(int userId, int idProductToAdd, int quantity);
-        int RemoveOneProductFromTheCart(int userId, int idProductToRemove);
-        List<ProductInCartDTO> ShowAllProductsInCart(int userId);
+        int RemoveProductFromTheCart(int userId, int idProductToRemove);
+        Dictionary<Product, int> ShowAllProductsInCart(int userId);
+        void UpdateProductQuantityInCart(int userId, int productId, QuantityCalc action);
     }
 }

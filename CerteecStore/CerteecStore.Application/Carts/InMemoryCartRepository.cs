@@ -64,5 +64,10 @@ namespace CerteecStore.Application.Carts
         {
             throw new NotImplementedException();
         }
+
+        List<ProductsInCart> ICartRepository.ShowAllProductsInCart(int userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

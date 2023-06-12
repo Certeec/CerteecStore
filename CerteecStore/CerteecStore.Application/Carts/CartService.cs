@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using CerteecStore.Application.Products;
@@ -22,33 +23,22 @@ namespace CerteecStore.Application.Carts
         public decimal CountCartValue(int userId)
         {
             var productsToCount = ShowAllProductsInCart(userId);
-            decimal valueOfCart = productsToCount.Sum(n => n.UnitPrice * n.Quantity); //Zastanawialem sie nad uzyciemTotalPrice ale risky
+            decimal valueOfCart = productsToCount.Sum(n => n.Key.ItemPrice * n.Value);
 
             return valueOfCart;
         }
 
+        public delegate int QuantityCalc(int x);
         //Coalesc operator ??
-        //public bool AddProductToCart(Guid userId, int idProductToAdd, int quantity)
-        //{
-        //    Product productToAdd = _productRepository.FindProductById(idProductToAdd);
-        //    if (productToAdd == null)
-        //    {
-        //        return false;
-        //    }
 
-        //    Cart userCart = FindCartByUserId(userId) ?? CreateCart(userId);
-        //    if(userCart.Products.ContainsKey(productToAdd))
-        //    {
-        //        userCart.Products[productToAdd] += quantity;
-        //    }
-        //    else
-        //    {
-        //        userCart.Products.Add(productToAdd, quantity);
-        //    }
+        public void UpdateProductQuantityInCart(int userId, int productId, QuantityCalc action)
+        {
 
-        //    UpdateCart(userId, userCart);
-        //    return true;
-        //}
+            var result = _cartRepository.GetProductQuantity(userId, productId);
+            var quantityToAdd = action(result.Quantity);
+            _cartRepository.UpdateQuantityInCart(userId, productId, quantityToAdd);
+
+        }
 
         public int AddProductToCart(int userId, int productId, int quantity)
         {
@@ -59,89 +49,33 @@ namespace CerteecStore.Application.Carts
             }
 
             var result = _cartRepository.GetProductQuantity(userId, productId);
-            if(result == null)
-            {
-               return _cartRepository.InsertIntoCart(userId, productId, quantity);
-            }
-            else
-            {
-                return _cartRepository.UpdateQuantityInCart(userId, productId, quantity + result.Quantity);
-            }
+
+
+
+            return result == null
+                ? _cartRepository.InsertIntoCart(userId, productId, quantity)
+                : _cartRepository.UpdateQuantityInCart(userId, productId, quantity + result.Quantity);
         }
 
-
-        public int RemoveOneProductFromTheCart(int userId, int productToRemoveId)
+        public int RemoveProductFromTheCart(int userId, int productToRemoveId)
         {
             return _cartRepository.RemoveProductFromCart(userId, productToRemoveId);
         }
 
-
-        //public int RemoveOneProductFromTheCart(Guid userId, int idProductToRemove)
-        //{
-        //    //Problems to solve -> if product is Null not gonna work... Also to Refactory.
-
-        //    Product productToRemove = _productRepository.FindProductById(idProductToRemove);
-        //    Cart userCart = FindCartByUserId(userId);
-
-        //    if (userCart.Products.ContainsKey(productToRemove)) 
-        //    {
-        //        userCart.Products[productToRemove] -= 1;
-        //        if (userCart.Products[productToRemove] < 1) // lepiej chyba wpisać == 0, wygląda trochę czytelniej
-        //         ///Jak dasz ==0, to gdy bedziesz potem usuwac  - quantity i ci wyjdzie -5, to nie zadziala, a tak sie zabezpieczamy.
-        //        {
-        //            userCart.Products.Remove(productToRemove);
-        //            UpdateCart(userId, userCart);
-        //            return 0;
-        //        }
-        //        else
-        //        {
-        //            UpdateCart(userId, userCart);
-        //            return userCart.Products[productToRemove];
-        //        }
-
-        //    }
-        //    return -1;
-
-        //}
-
-        //public List<ProductInCartDTO> ShowAllProductsInCart(Guid userId)
-        //{
-        //    Cart userCart = FindCartByUserId(userId);
-        //    if (userCart == null)
-        //    {
-        //        return new List<ProductInCartDTO>();
-        //    }
-
-        //    return userCart.Products.Select(n => new ProductInCartDTO
-        //    {
-        //        Name = n.Key.Name,
-        //        ProductId = n.Key.ProductId,
-        //        Quantity = n.Value,
-        //        UnitPrice = n.Key.ItemPrice
-        //    }).ToList();
-        //}
-
-        public List<ProductInCartDTO> ShowAllProductsInCart(int userId) 
+        public Dictionary<Product,int> ShowAllProductsInCart(int userId) 
         {
             var Cart = _cartRepository.ShowAllProductsInCart(userId);
             int[] products = Cart.Select(n => n.ProductId).ToArray();
             List<Product> productsReturned = _productRepository.ReadProductsByArray(products);
+            Dictionary<Product, int> productsToReturn = new Dictionary<Product, int>();
 
-            List<ProductInCartDTO> listToReturn = new List<ProductInCartDTO>();
-            for(int i = 0;  i < productsReturned.Count(); i++)
+            for(int i =0; i < productsReturned.Count(); i++)
             {
-                ProductInCartDTO productInDto = new ProductInCartDTO()
-                {
-                    ProductId = productsReturned[i].ProductId,
-                    Name = productsReturned[i].Name,
-                    UnitPrice = productsReturned[i].ItemPrice,
-                    Quantity = Cart[i].Quantity 
-                };
-                listToReturn.Add(productInDto);
+                productsToReturn.Add(productsReturned[i], Cart[i].Quantity);
             }
-            return listToReturn;
 
-            //na Dictionary
+            return productsToReturn;
+
         }
     }
 }

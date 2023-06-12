@@ -16,10 +16,9 @@ namespace CerteecStore.Application.Products
     {
         private readonly string _connectionString;
 
-        public ProductRepository()
-        {
-
-            //_connectionString = configuration["ConnectionString"];
+        public ProductRepository(IConfiguration configuration)
+        {  
+            _connectionString = configuration["ConnectionString"];
         }
            
         public Product? FindProductById(int productId)
